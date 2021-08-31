@@ -43,3 +43,6 @@ test_a = scale.transform(np.array([180,60,0.1,0.6,0,1]).reshape(1,-1))
 test_b = scale.transform(np.array([180,60,0.5,0.6,0,1]).reshape(1,-1))
 print("0.1: "+str(NN.predict(test_a)))
 print("0.5: "+str(NN.predict(test_b))) #thicc boi gives better score
+
+
+# TEST COMMENT :D
