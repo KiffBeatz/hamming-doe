@@ -1,8 +1,10 @@
 from sklearn.neural_network import MLPRegressor
-from sklearn.preprocessing import StandardScaler
 import numpy as np
 
+# ---------------------------------------------------------------
 # INPUT
+# ---------------------------------------------------------------
+
 my_input = open('printer_runs.txt','r').read().split('\n')
 A = [] 
 
@@ -11,38 +13,40 @@ for line in my_input:
     A.append(a)
 
 labels = A[0:9]
-X = np.array(A[9:585]).reshape(-1, 9).astype(np.float64)
 
 
+B = np.array(A[9:585]).reshape(-1, 9)
+b = ['180','40','0.1','0.55','V','0']
+X = np.zeros((64, 12))
+Y = np.zeros((64, 3))
 
-# STANDARDIZING INPUT - must still normalize
-x_train = X[:54,:-3]
-y_train = X[0:54:,7]
-x_test = X[54:,:-3]
-y_test = X[54:,7]
+for i in range(len(B)):
+  for j in range(6):
+    if B[i][j] == b[j]:
+      X[i][2*j]=1
+      X[i][2*j+1]=0
+    else:
+      X[i][2*j]=0
+      X[i][2*j+1]=1
+  for j in range(3):
+    Y[i][j] = B[i][j+6]
 
-scale = StandardScaler(with_mean=0, with_std=1).fit(x_train, y_train)
-train_norm = scale.transform(x_train)
-test_norm = scale.transform(x_test)
+Y_0 = Y[:,0]
+Y_1 = Y[:,1]
+Y_2 = Y[:,2]
 
+# ---------------------------------------------------------------
+# THREE NEURAL NETWORKS --> 64 Input Observations (samples)
+# ---------------------------------------------------------------
 
+NN_Young = MLPRegressor(max_iter=50000).fit(X, Y_0)
+NN_Break_In_Tention = MLPRegressor(max_iter=50000).fit(X, Y_1)
+NN_Breakage_Deform = MLPRegressor(max_iter=50000).fit(X, Y_2)
 
-# Neural Network of 54 samples and 10 tests
-NN = MLPRegressor(max_iter=10000).fit(train_norm, y_train)
-for i in range(10):
-  print("Test "+str(i+1))
-  print(NN.predict(test_norm[i].reshape(1,-1)))
-  print(y_test[i])
-  print("")
-
-
-
-# testing one of features as example
-print("Testing: " + labels[2])
-test_a = scale.transform(np.array([180,60,0.1,0.6,0,1]).reshape(1,-1))
-test_b = scale.transform(np.array([180,60,0.5,0.6,0,1]).reshape(1,-1))
-print("0.1: "+str(NN.predict(test_a)))
-print("0.5: "+str(NN.predict(test_b))) #thicc boi gives better score
-
-
-# TEST COMMENT :D
+print("Young(GPA) with different Test Tube Positions")
+print("Horizontal Position: " + str(NN_Young.predict(np.array([0,1,0,1,0,1,0,1,0,1,0,1]).reshape(1,-1))))
+print("Vertical Position: " + str(NN_Young.predict(np.array([0,1,0,1,0,1,0,1,1,0,0,1]).reshape(1,-1))))
+print("")
+print("Young(GPA) with different Extrusion Widths")
+print("0.55 Width: " + str(NN_Young.predict(np.array([0,1,0,1,0,1,1,0,0,1,0,1]).reshape(1,-1))))
+print("0.75 Width: " + str(NN_Young.predict(np.array([0,1,0,1,0,1,0,1,0,1,0,1]).reshape(1,-1))))
