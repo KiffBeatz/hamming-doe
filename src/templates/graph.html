@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.js"></script>
+</head>
+<body>
+    <canvas id="lineChart" width="900" height="400"></canvas>
+    <script>
+        var ctx = document.getElementById("lineChart").getContext("2d");
+        var lineChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                // ignore any syntax errors here, jinja messes with javascript so
+                // some file editors might think there are errors below, when there are not any
+                labels: {{ labels | safe }},
+                datasets: [
+                    {
+                        label: "Data points",
+                        data: {{ values | safe }},
+                        fill: true,
+                        borderColor: "rgb(32, 150, 80)",
+                        lineTension: 0.5
+                    }
+                ]
+            },
+            options: {
+                // change this to true to fill the whole screen
+                responsive: false
+            }
+        });
+    </script>
+</body>
+</html>
