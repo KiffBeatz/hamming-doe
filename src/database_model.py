@@ -6,10 +6,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+#Basic database rules
+class Data(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True)
+    date = db.Column('date', db.String, default = None)
+    values = db.Column('values', db.Integer)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '%s : %s'%(self.date,self.values)
