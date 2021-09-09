@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from sqlalchemy.sql.expression import label
+#TODO Imports 'app' from database_model. Not ideal, quick hack that works for now. 
 from database_model import app
 from database_api import initialize_database, set_data, get_all_dates, get_all_values, get_data, get_values_below_a_thousand, get_values_above_a_thousand
 
