@@ -1,6 +1,7 @@
 from flask import Flask, render_template
+from sqlalchemy.sql.expression import label
 from database_model import app
-from database_api import initialize_database, set_data, get_all_dates, get_all_values, get_data, get_values_below_a_thousand
+from database_api import initialize_database, set_data, get_all_dates, get_all_values, get_data, get_values_below_a_thousand, get_values_above_a_thousand
 
 @app.route('/')
 def home():
@@ -18,15 +19,26 @@ def home():
       ("09-01-2021", 1478),
    ]
 
+   #Sets data
    set_data(data)
 
-   labels = get_all_dates()
+   #All data
+   dates = get_all_dates()
    values = get_all_values()
 
-   print(get_data()[0].date)
-   print(get_values_below_a_thousand())
+   #Data below a thousand
+   data_below_a_thousand = get_values_below_a_thousand()
 
-   return render_template("graph.html", labels=labels, values=values)
+   dates_below_a_thousand = [dates.date for dates in data_below_a_thousand]
+   values_below_a_thousand = [dates.values for dates in data_below_a_thousand]
+
+   #Data above a thousand
+   data_above_a_thousand = get_values_above_a_thousand()
+
+   dates_above_a_thousand = [dates.date for dates in data_above_a_thousand]
+   values_above_a_thousand = [dates.values for dates in data_above_a_thousand]
+
+   return render_template("graph.html", labels=dates_below_a_thousand, values=values_below_a_thousand)
 
 
 if __name__ == '__main__':
