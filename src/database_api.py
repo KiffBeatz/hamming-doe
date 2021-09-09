@@ -16,7 +16,6 @@ def _add_data(v1):
     db.session.add(var)
 
 def get_data():
-    print(type(Data.query.all()))
     return Data.query.all()
 
 def get_all_dates():
@@ -25,4 +24,8 @@ def get_all_dates():
 
 def get_all_values():
     values = [dates.values for dates in Data.query.all()]
+    return values
+
+def get_values_below_a_thousand():
+    values = Data.query.filter(Data.values < 1000).first()
     return values

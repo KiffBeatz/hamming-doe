@@ -1,8 +1,10 @@
 from flask import Flask, render_template
-app = Flask(__name__)
+from database_model import app
+from database_api import initialize_database, set_data, get_all_dates, get_all_values, get_data, get_values_below_a_thousand
 
 @app.route('/')
 def home():
+   initialize_database()
    # irrelevant test data
    data = [
       ("01-01-2021", 1597),
@@ -16,8 +18,13 @@ def home():
       ("09-01-2021", 1478),
    ]
 
-   labels = [row[0] for row in data]
-   values = [row[1] for row in data]
+   set_data(data)
+
+   labels = get_all_dates()
+   values = get_all_values()
+
+   print(get_data()[0].date)
+   print(get_values_below_a_thousand())
 
    return render_template("graph.html", labels=labels, values=values)
 
