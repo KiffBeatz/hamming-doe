@@ -1,4 +1,5 @@
 Temperature,Speed,Thickness of Layer,Extrusion Width,Test Tube Position,Internal Fill Angle,Young(GPa),Break in Tension(MPa),Breakage Deformation
+D,D,D,D,D,D,O,O,O
 180,40,0.1,0.55,H,0,2.70,24.10,0.01
 200,40,0.1,0.55,H,90,3.13,30.71,0.01
 180,80,0.1,0.55,H,90,2.53,27.42,0.01
