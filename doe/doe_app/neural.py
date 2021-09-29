@@ -13,7 +13,7 @@ class NN:
 		self.X_labels = [] # list of labels for each feature (normalized)
 		self.y_labels = [] # list of labels for each output
 		self.mean = None # list of mean of each feature
-		
+
 		# Checking validity of input (TODO)
 
 
@@ -24,7 +24,7 @@ class NN:
 		data_types = self.data[1]
 		A = np.vstack(self.data[2:])
 
-		
+
 		# Num observations, Num features+outputs
 		N, k = A.shape
 
@@ -80,19 +80,19 @@ class NN:
 		# Convert lists
 		self.mean = np.array(mean_list)
 		d = len(X_list)
-		X = np.zeros((N, d))		
+		X = np.zeros((N, d))
 		for i in range(d):
 			x = X_list[i]
 			for j in range(N):
 				X[j][i] = x[j]
-		
+
 
 		# Neural Network outputs
 		for y in y_list:
 			nn_out = MLPRegressor(max_iter = 50000).fit(X, y.astype(np.float64))
 			self.nn.append(nn_out)
 
-	
+
 	""" SCORE """
 	def score(self, feature, output):
 		if (feature > (len(self.x_labels)-1) or feature < 0):
@@ -104,7 +104,7 @@ class NN:
 			print("Usage: NN.score(feature_idx, output_idx)")
 			return -1
 
-		
+
 		if (self.x_labels[feature].split(":")[0] == "D"):
 			i_list = []
 			a = self.mean
@@ -112,7 +112,7 @@ class NN:
 			for i in range(len(self.X_labels)):
 				if self.x_labels[feature] in self.X_labels[i]:
 					i_list.append(i)
-			
+
 			for i in i_list:
 				a[i] = 0
 
@@ -126,25 +126,7 @@ class NN:
 
 		elif (self.x_labels[feature].split(":")[0] == "C"):
 			a = self.mean
-			
+
 			for i in range(len(self.X_labels)):
 				if self.x_labels[feature] in self.X_labels[i]:
 					return a[i]
-
-
-#test = NN('input/SURFACE_RESPONSE_RUNS.csv')
-#test.fit()
-#print(test.score(0,0))
-#quit()
-
-#test = NN('input/FRACTIONAL_FACTORIAL_RUNS.csv')
-#test.fit()
-#print(test.score(2,0))
-
-#test = NN('input/3D_PRINTER_RUNS.csv')
-#test.fit()
-#print(test.score(2,0))
-
-#TODO delete this
-def test():
-	return 'test'

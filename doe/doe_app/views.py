@@ -1,34 +1,36 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from . import neural
+import numpy as np
 
 def home(request):
     return HttpResponse('<h1>DOE home</h1>')
 
 def graph(request):
+    test = neural.NN('doe_app/neural_data/FRACTIONAL_FACTORIAL_RUNS.csv')
+    test.fit()
 
-    a = neural.test()
-    print(a)
+    num_feature = 0
+    num_output = 0
+    data = test.score(num_feature, num_output)
 
-    # irrelevant test data
-    data = [
-        ("01-01-2021", 1597),
-        ("02-01-2021", 1456),
-        ("03-01-2021", 1908),
-        ("04-01-2021", 896),
-        ("05-01-2021", 755),
-        ("06-01-2021", 453),
-        ("07-01-2021", 1100),
-        ("08-01-2021", 1234),
-        ("09-01-2021", 1478),
-    ]
+    ylabel = test.y_labels[num_output].split(":")[1]
+    print(ylabel)
 
-    labels = [row[0] for row in data]
-    values = [row[1] for row in data]
+    if (data[0][0] == "D"):
+        # Discrete
+        labels = []
+        values = []
+        for i in range(len(data)):
+            if (i % 2 == 0):
+                labels.append(data[i].split(":")[1])
+            else:
+                values.append(data[i][0].astype(np.float64))
+
     context = {
         'labels': labels,
-        'values': values
+        'values': values,
+        'ylabel': ylabel
     }
 
     return render(request, "graph.html", context)
-

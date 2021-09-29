@@ -12,25 +12,19 @@
     <script>
         var ctx = document.getElementById("lineChart").getContext("2d");
         var lineChart = new Chart(ctx, {
-            type: "line",
-            data: {
-                // ignore any syntax errors here, jinja messes with javascript so
-                // some file editors might think there are errors below, when there are not any
-                labels: {{ labels | safe }},
-                datasets: [
-                    {
-                        label: "Data points",
-                        data: {{ values | safe }},
-                        fill: true,
-                        borderColor: "rgb(32, 150, 80)",
-                        lineTension: 0.5
-                    }
-                ]
-            },
-            options: {
-                // change this to true to fill the whole screen
-                responsive: false
-            }
+          type: "line",
+          data: {
+              labels: {{ labels | safe}},
+              datasets: [{
+                  label: "Testing: {{ ylabel }}",
+                  backgroundColor: 'rgb(255, 99, 132)',
+                  borderColor: 'rgb(255, 99, 132)',
+                  data: {{ values | safe}},
+              }]
+          },
+          options: {
+              responsive: false
+          }
         });
     </script>
 </body>
