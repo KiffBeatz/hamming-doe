@@ -132,15 +132,19 @@ class NN:
 					return a[i]
 
 
-test = NN('input/SURFACE_RESPONSE_RUNS.csv')
-test.fit()
-print(test.score(0,0))
-quit()
+#test = NN('input/SURFACE_RESPONSE_RUNS.csv')
+#test.fit()
+#print(test.score(0,0))
+#quit()
 
-test = NN('input/FRACTIONAL_FACTORIAL_RUNS.csv')
-test.fit()
-print(test.score(2,0))
+#test = NN('input/FRACTIONAL_FACTORIAL_RUNS.csv')
+#test.fit()
+#print(test.score(2,0))
 
-test = NN('input/3D_PRINTER_RUNS.csv')
-test.fit()
-print(test.score(2,0))
+#test = NN('input/3D_PRINTER_RUNS.csv')
+#test.fit()
+#print(test.score(2,0))
+
+#TODO delete this
+def test():
+	return 'test'
