@@ -4,7 +4,7 @@ from . import neural
 import numpy as np
 
 def home(request):
-    return HttpResponse('<h1>DOE home</h1>')
+    return render(request, "home.html")
 
 def graph(request):
     test = neural.NN('doe_app/neural_data/FRACTIONAL_FACTORIAL_RUNS.csv')

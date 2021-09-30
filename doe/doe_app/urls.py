@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.home, name='doe-home'),
-    path('graph/', views.graph, name='doe-graph'),
+    path('', views.home, name='home'),
+    path('graph/', views.graph, name='graph'),
+    #path('excel/',views.downloadexcel,name="downloadexcel")
 ]
