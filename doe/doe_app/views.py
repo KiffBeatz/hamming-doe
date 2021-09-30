@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from . import neural
 import numpy as np
 
@@ -7,16 +6,17 @@ def home(request):
     return render(request, "home.html")
 
 def graph(request):
+    ## TODO: ## TODO: dynamic input loading
+    ## TODO: ## TODO: loads neural data file from db
+    ## TODO: ## TODO: must take input: num_output, num_feature
+    num_feature, num_output = 0, 0
     test = neural.NN('doe_app/neural_data/FRACTIONAL_FACTORIAL_RUNS.csv')
     test.fit()
 
-    num_feature = 0
-    num_output = 0
+
+    # Use Score data to build context for html
     data = test.score(num_feature, num_output)
-
     ylabel = test.y_labels[num_output].split(":")[1]
-    print(ylabel)
-
     if (data[0][0] == "D"):
         # Discrete
         labels = []
@@ -30,7 +30,10 @@ def graph(request):
     context = {
         'labels': labels,
         'values': values,
-        'ylabel': ylabel
+        'ylabel': ylabel,
+        'xlabels': test.x_labels,
+        'ylabels': test.y_labels
     }
+
 
     return render(request, "graph.html", context)

@@ -1,0 +1,41 @@
+NN	/home/lucas/Desktop/hamming-doe/doe/doe_app/neural.py	/^class NN:$/;"	class	line:5
+__init__	/home/lucas/Desktop/hamming-doe/doe/doe_app/neural.py	/^	def __init__(self, file_name):$/;"	member	line:9	class:NN
+fit	/home/lucas/Desktop/hamming-doe/doe/doe_app/neural.py	/^	def fit(self):$/;"	member	line:21	class:NN
+score	/home/lucas/Desktop/hamming-doe/doe/doe_app/neural.py	/^	def score(self, feature, output):$/;"	member	line:94	class:NN
+home	/home/lucas/Desktop/hamming-doe/doe/doe_app/views.py	/^def home(request):$/;"	function	line:5
+graph	/home/lucas/Desktop/hamming-doe/doe/doe_app/views.py	/^def graph(request):$/;"	function	line:8
+html	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/home.html	/^<html lang="en">$/;"	function	line:2
+head	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/home.html	/^<head>$/;"	function	line:3
+meta	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/home.html	/^    <meta charset="UTF-8">$/;"	function	line:4
+meta	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/home.html	/^    <meta name="viewport" content="width=device-width, initial-scale=1">$/;"	function	line:5
+title	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/home.html	/^    <title>Homepage<\/title>$/;"	function	line:6
+style	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/home.html	/^    <style>$/;"	function	line:8
+body	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/home.html	/^<body>$/;"	function	line:42
+div	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/home.html	/^    <div class="topnav">$/;"	function	line:43
+a	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/home.html	/^        <a href="{% url 'home' %}">Home<\/a>$/;"	function	line:44
+a	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/home.html	/^        <a href="{% url 'graph' %}">Graph<\/a>$/;"	function	line:45
+div	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/home.html	/^    <div><h1>Dynamic DOE<\/h1><\/div>$/;"	function	line:47
+html	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^<html lang="en">$/;"	function	line:2
+head	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^<head>$/;"	function	line:3
+meta	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^    <meta charset="UTF-8">$/;"	function	line:4
+meta	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^    <meta http-equiv="X-UA-Compatible" content="IE=edge">$/;"	function	line:5
+meta	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^    <meta name="viewport" content="width=device-width, initial-scale=1.0">$/;"	function	line:6
+title	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^    <title>Sample Chart<\/title>$/;"	function	line:7
+script	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^    <script src="https:\/\/cdn.jsdelivr.net\/npm\/chart.js@3.5.1\/dist\/chart.js"><\/script>$/;"	function	line:8
+style	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^    <style>$/;"	function	line:9
+body	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^<body>$/;"	function	line:35
+div	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^    <div class="topnav">$/;"	function	line:36
+a	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^      <a href="{% url 'home' %}">Home<\/a>$/;"	function	line:37
+a	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^      <a href="{% url 'graph' %}">Graph<\/a>$/;"	function	line:38
+div	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^    <div class="graph">$/;"	function	line:41
+canvas	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^      <canvas id="lineChart" width="1350" height="800"><\/canvas>$/;"	function	line:42
+script	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^      <script>$/;"	function	line:43
+div	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^    <div class="selectform">$/;"	function	line:64
+form	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^      <form>$/;"	function	line:65
+label	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^        <label>Input Feature<\/label>$/;"	function	line:66
+select	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^        <select id="xlist"><\/select>$/;"	function	line:67
+label	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^        <label>Output<\/label>$/;"	function	line:68
+select	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^        <select id="ylist"><\/select>$/;"	function	line:69
+button	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^        <button>Test feature<\/button>$/;"	function	line:70
+script	/home/lucas/Desktop/hamming-doe/doe/doe_app/templates/graph.html	/^        <script>$/;"	function	line:72
+urlpatterns	/home/lucas/Desktop/hamming-doe/doe/doe_app/urls.py	/^urlpatterns = [$/;"	variable	line:4

@@ -4,5 +4,5 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('graph/', views.graph, name='graph'),
-    #path('excel/',views.downloadexcel,name="downloadexcel")
+    #path('stores/<int:store_id>/',stores_views.detail),
 ]

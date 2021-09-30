@@ -24,10 +24,8 @@ class NN:
 		data_types = self.data[1]
 		A = np.vstack(self.data[2:])
 
-
 		# Num observations, Num features+outputs
 		N, k = A.shape
-
 
 		# Convert input
 		# Lists of vectors X=(Dynamic | Continuous) y=Output)
@@ -76,7 +74,6 @@ class NN:
 				print(x)
 
 
-
 		# Convert lists
 		self.mean = np.array(mean_list)
 		d = len(X_list)
@@ -103,7 +100,6 @@ class NN:
 			print("Please specify an output index between 0 and " + str(len(self.y_labels)-1))
 			print("Usage: NN.score(feature_idx, output_idx)")
 			return -1
-
 
 		if (self.x_labels[feature].split(":")[0] == "D"):
 			i_list = []
