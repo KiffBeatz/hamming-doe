@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Datasets{% endblock %}
+
+{% block content %}
+<form action="/datasets/" class="dropzone">
+    {% csrf_token %}
+    <div class="fallback">
+        <input name="file" type="file" multiple />
+    </div>
+</form>
+{% endblock %}
