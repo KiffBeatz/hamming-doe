@@ -3,10 +3,51 @@
 {% block title %}Datasets{% endblock %}
 
 {% block content %}
-<form action="/datasets/" class="dropzone">
+<!-- <form action="/datasets/" class="dropzone">
     {% csrf_token %}
     <div class="fallback">
         <input name="file" type="file" multiple />
     </div>
-</form>
+</form> -->
+<meta name="viewport" content="width=device-width, inital-scale=1">
+<style>
+    .Upload {
+        left: 45%;
+        top: 40%;
+        height: 15%;
+        width: 15%;
+        background: radial-gradient(circle, rgb(69, 73, 72) 0%, rgb(223, 223, 223) 100%);
+        background-position: center;
+        display: grid;
+        position: absolute;
+        border-radius: 30px;
+        padding: 1em;
+        margin-bottom: 1em;
+    }
+
+    .View {
+        left: 45%;
+        top: 60%;
+        height: 15%;
+        width: 15%;
+        background: radial-gradient(circle, rgb(69, 73, 72) 0%, rgb(223, 223, 223) 100%);
+        background-position: center;
+        display: block;
+        position: absolute;
+        border-radius: 30px;
+        padding: 1em;
+        margin-bottom: 1em;
+    }
+</style>
+<button class="Upload" onclick="clickUpload()">Upload</button>
+<button class="View" onclick="clickView()">View</button>
+<script>
+    function clickUpload() {
+        location.href = "http://127.0.0.1:8000/Upload"
+    }
+
+    function clickView() {
+        location.href = "http://127.0.0.1:8000/View"
+    }
+</script>
 {% endblock %}
