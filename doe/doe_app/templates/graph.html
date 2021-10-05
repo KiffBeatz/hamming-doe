@@ -30,7 +30,13 @@
                 }]
             },
             options: {
-                responsive: false
+                responsive: false,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: '{{ graph_title }}'
+                  }
+                }
             }
           });
         </script>

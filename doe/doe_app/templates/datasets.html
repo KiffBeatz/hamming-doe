@@ -39,15 +39,16 @@
         margin-bottom: 1em;
     }
 </style>
+<
 <button class="Upload" onclick="clickUpload()">Upload</button>
 <button class="View" onclick="clickView()">View</button>
 <script>
     function clickUpload() {
-        location.href = "http://127.0.0.1:8000/Upload"
+        location.href = "http://127.0.0.1:8000/datasets/upload"
     }
 
     function clickView() {
-        location.href = "http://127.0.0.1:8000/View"
+        location.href = "http://127.0.0.1:8000/datasets/view"
     }
 </script>
 {% endblock %}

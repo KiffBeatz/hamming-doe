@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}View Datasets{% endblock %}
+{% block content %}
+
+<form action="/graph/" method="post">
+    {% csrf_token %}
+    <div class="list-group">
+        {% for name in names %}
+        <button type="submit" class="list-group-item list-group-item-action" name="dataset_choice" value="{{ name }}">{{ name }}</button>
+        {% endfor %}
+    </div>
+</form>
+
+{% endblock %}
