@@ -1,0 +1,11 @@
+.ViewFiles {
+    margin-left: auto;
+    margin-right: auto;
+    height: 30%;
+    width: 30%;
+    background: radial-gradient(circle, rgb(69, 73, 72) 0%, rgb(223, 223, 223) 100%);
+    display: grid;
+    margin-top: 20px;
+    border-radius: 30px;
+    padding: 1.5em;
+}

@@ -48,7 +48,7 @@
           <label>Output</label>
           <select id="ylist"></select>
           <button>Test feature</button>
-  
+
           <script>
             var str = ''
             var X = {{ xlabels | safe}}
@@ -56,7 +56,7 @@
               str += '<option>'+ x + '</option>';
             });
             document.getElementById("xlist").innerHTML = str;
-  
+
             str = ''
             var Y = {{ ylabels | safe}}
             Y.forEach(function(y) {

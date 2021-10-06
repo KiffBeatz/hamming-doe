@@ -1,0 +1,26 @@
+.Upload {
+    left: 45%;
+    top: 40%;
+    height: 15%;
+    width: 15%;
+    background: radial-gradient(circle, rgb(69, 73, 72) 0%, rgb(223, 223, 223) 100%);
+    background-position: center;
+    display: grid;
+    position: absolute;
+    border-radius: 30px;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+.View {
+    left: 45%;
+    top: 60%;
+    height: 15%;
+    width: 15%;
+    background: radial-gradient(circle, rgb(69, 73, 72) 0%, rgb(223, 223, 223) 100%);
+    background-position: center;
+    display: block;
+    position: absolute;
+    border-radius: 30px;
+    padding: 1em;
+    margin-bottom: 1em;
+}
