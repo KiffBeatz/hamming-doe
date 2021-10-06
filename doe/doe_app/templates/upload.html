@@ -3,10 +3,32 @@
 {% block title %}Upload Datasets{% endblock %}
 
 {% block content %}
+<style>
+    .ViewFiles {
+        left: 45%;
+        top: 40%;
+        height: 15%;
+        width: 15%;
+        background: radial-gradient(circle, rgb(69, 73, 72) 0%, rgb(223, 223, 223) 100%);
+        background-position: center;
+        display: grid;
+        position: relative;
+        border-radius: 30px;
+        padding: 1em;
+        margin-bottom: 1em;
+    }
+</style>
+
 <form action="/datasets/upload" class="dropzone">
     {% csrf_token %}
     <div class="fallback">
         <input name="file" type="file" multiple />
     </div>
 </form>
+<button class="ViewFiles" onclick="clickViewFiles()">View uploaded files</button>
+<script>
+    function clickViewFiles() {
+        location.href = "http://127.0.0.1:8000/datasets/view"
+    }
+</script>
 {% endblock %}
