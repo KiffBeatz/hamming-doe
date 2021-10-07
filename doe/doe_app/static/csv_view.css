@@ -24,7 +24,7 @@ table {
 }
 
 th {
-    background: lightblue;
+    background: tblue;
     color: black;
     text-align: left;
 }
@@ -32,6 +32,10 @@ th {
 th,
 td {
     padding: 10px 20px;
+}
+
+tr:nth-child(odd) {
+	background: lightblue;
 }
 
 tr:nth-child(even) {
