@@ -13,6 +13,7 @@
 
 <button class="Upload" onclick="clickUpload()">Upload</button>
 <button class="View" onclick="clickView()">View</button>
+<button class="CSV_View" onclick="clickCSV_View()">CSV_View</button>
 <script>
     function clickUpload() {
         location.href = "http://127.0.0.1:8000/datasets/upload"
@@ -20,6 +21,10 @@
 
     function clickView() {
         location.href = "http://127.0.0.1:8000/datasets/view"
+    }
+
+		function clickCSV_View() {
+        location.href = "http://127.0.0.1:8000/datasets/csv_view"
     }
 </script>
 {% endblock %}

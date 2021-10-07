@@ -10,11 +10,14 @@
     <!-- Dropzone CSS and JS-->
     <link rel="stylesheet" href="{% static 'dropzone.css' %}">
     <script src="{% static 'dropzone.js' %}"></script>
+		<!-- CSV table view JS -->
+		<script src="{% static 'papaparse.min.js' %}"></script>
+		<script type="module" src="{% static 'csv_view.js' %}"></script>
     <!-- Custom CSS and JS-->
     <link rel="stylesheet" href="{% static 'base_style.css' %}">
     <link rel="stylesheet" href="{% static 'upload_style.css' %}">
     <link rel="stylesheet" href="{% static 'dataset_style.css' %}">
-    <script src="{% static 'main.js' %}"></script>
+		<link rel="stylesheet" href="{% static 'csv_view.css' %}">
 
     <title>{% block title %}Dynamic DOE{% endblock %}</title>
 </head>

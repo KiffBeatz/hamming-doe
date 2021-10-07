@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<form action="/datasets/upload" class="dropzone">
+<form action="/datasets/upload" class="dropzone dz">
     {% csrf_token %}
     <div class="fallback">
         <input name="file" type="file" multiple />
