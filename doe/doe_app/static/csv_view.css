@@ -9,7 +9,7 @@ table {
 }
 
 th {
-  background: blue;
+  background: grey;
   color: #ffffff;
   text-align: left;
 }
@@ -17,6 +17,10 @@ th {
 th,
 td {
   padding: 10px 20px;
+}
+
+tr:nth-child(odd) {
+  background: blue;
 }
 
 tr:nth-child(even) {
