@@ -3,17 +3,11 @@
 {% block title %}Datasets{% endblock %}
 
 {% block content %}
-<!-- <form action="/datasets/" class="dropzone">
-    {% csrf_token %}
-    <div class="fallback">
-        <input name="file" type="file" multiple />
-    </div>
-</form> -->
-<meta name="viewport" content="width=device-width, inital-scale=1">
 
-<button class="Upload" onclick="clickUpload()">Upload</button>
-<button class="View" onclick="clickView()">View</button>
-<button class="CSV_View" onclick="clickCSV_View()">CSV_View</button>
+<meta name="viewport" content="width=device-width, inital-scale=1">
+<button class="Upload" onclick="clickUpload()">Upload a Dataset</button>
+<button class="View" onclick="clickView()">List of Datasets</button>
+<button class="CSV_View" onclick="clickCSV_View()">View a Dataset</button>
 <script>
     function clickUpload() {
         location.href = "http://127.0.0.1:8000/datasets/upload"

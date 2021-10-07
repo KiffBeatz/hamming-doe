@@ -3,7 +3,10 @@
 {% block title %}View CSV{% endblock %}
 
 {% block content %}
-<input type="file" id="csvFileInput" style="padding-bottom: 15px">
-<table id="csvRoot"></table>
+<form class="csvViewForm">
+    <input type="file" class="csvViewInput" id="csvFileInput" style="padding-bottom: 15px">
+</form>
+<form class="">
+    <table id="csvRoot"></table>
+</form>
 {% endblock %}
-

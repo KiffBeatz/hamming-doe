@@ -17,7 +17,7 @@
 		margin-bottom: 20px;
 		height: 200px;
 		width: 800px;
-		border: dashed;
 		border-radius: 30px;
-		border-color: blue;
+    border: solid;
+		border-color: gray;
 }

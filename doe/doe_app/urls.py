@@ -6,7 +6,7 @@ urlpatterns = [
     path('graph/', views.graph, name='graph'),
     path('datasets/', views.datasets, name='datasets'),
     path('datasets/upload', views.upload, name='upload'),
-		path('datasets/csv_view', views.csv_view, name='csv_view'),
+	path('datasets/csv_view', views.csv_view, name='csv_view'),
     path('datasets/view', views.view, name='view'),
     #path('stores/<int:store_id>/',stores_views.detail),
 ]
