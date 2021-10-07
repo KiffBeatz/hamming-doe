@@ -71,7 +71,6 @@ class NN:
 				X_list.append(x)
 				mean_list.append(x.mean())
 				self.X_labels.append("C:" + labels[i])
-				print(x)
 
 
 		# Convert lists
@@ -122,7 +121,17 @@ class NN:
 
 		elif (self.x_labels[feature].split(":")[0] == "C"):
 			a = self.mean
-
+			k = 0
 			for i in range(len(self.X_labels)):
 				if self.x_labels[feature] in self.X_labels[i]:
-					return a[i]
+				    k = i
+			ret = []
+			cts_range = [-1.6, -0.8, 0, 0.8, 1.6]
+			for i in cts_range:
+				a[k] = i
+				score = 0
+				for j in range(2):
+					score += (self.nn[output].predict(a.reshape(1,-1)))/2
+				ret.append(self.x_labels[feature] + " = " + str(i))
+				ret.append(score)
+			return ret
