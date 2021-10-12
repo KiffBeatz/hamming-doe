@@ -21,7 +21,10 @@ def graph(request):
     ## TODO: ## TODO: loads neural data file from db
     ## TODO: ## TODO: must take input: num_output, num_feature
     num_feature, num_output = 1, 0
-    test = neural.NN('doe_app/neural_data/{file_name}.csv'.format(file_name = graph_title))
+    # test = neural.NN('doe_app/neural_data/{file_name}.csv'.format(file_name = graph_title))
+    # test.fit()
+    dataset_list = getDatasetList(graph_title)
+    test = neural.NN(dataset_list)
     test.fit()
 
     # Use Score data to build context for html
@@ -45,7 +48,6 @@ def graph(request):
         'ylabels': test.y_labels,
         'graph_title': graph_title
     }
-
 
     return render(request, "graph.html", context)
 
@@ -88,3 +90,22 @@ def view(request):
     }
 
     return render(request, "view.html", context)
+
+def getDatasetList(dataset_name):
+    check = Dataset.objects.filter(pk=dataset_name).exists()
+    if check:
+        current_dataset = Dataset.objects.filter(pk=dataset_name).values()[0]
+        final_list = []
+
+        dataset_headers = current_dataset["headers"].split(",")
+        final_list.append(dataset_headers)
+
+        dataset_types = current_dataset["types"].split(",")
+        final_list.append(dataset_types)
+
+        dataset_data = current_dataset["data"].split("\r\n")
+        for a in dataset_data:
+            if(a.split(",") != [""]):
+                final_list.append(a.split(","))
+
+        return final_list

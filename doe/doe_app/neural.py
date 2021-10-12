@@ -6,8 +6,9 @@ class NN:
 	""" A class for the neurel network backend of the dynamic DOE """
 
 	""" INIT """
-	def __init__(self, file_name):
-		self.data = list(csv.reader(open(file_name, 'r')))
+	def __init__(self, data_list):
+		#self.data = list(csv.reader(open(file_name, 'r')))
+		self.data = data_list
 		self.nn = [] # list of neural networks, one for each output
 		self.x_labels = [] # list of labels for each feature
 		self.X_labels = [] # list of labels for each feature (normalized)
