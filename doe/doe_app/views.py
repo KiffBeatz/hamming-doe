@@ -91,6 +91,7 @@ def view(request):
 
     return render(request, "view.html", context)
 
+#Reads data from the database and formats it into a list that the neural network accepts
 def getDatasetList(dataset_name):
     check = Dataset.objects.filter(pk=dataset_name).exists()
     if check:
