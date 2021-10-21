@@ -5,6 +5,7 @@
 
 <form action="/graph/" method="post">
     {% csrf_token %}
+    <h2 style="color: #eeeeee; margin-left: 7px; margin-top: 7px">Choose a dataset to visualize graphically</h2>
     <div class="list-group">
         {% for name in names %}
         <button type="submit" class="list-group-item list-group-item-action" name="dataset_choice" value="{{ name }}">{{ name }}</button>

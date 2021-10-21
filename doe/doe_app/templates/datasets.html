@@ -6,18 +6,12 @@
 
 <meta name="viewport" content="width=device-width, inital-scale=1">
 <button class="Upload" onclick="clickUpload()">Upload a Dataset</button>
-<button class="View" onclick="clickView()">List of Datasets</button>
 <button class="CSV_View" onclick="clickCSV_View()">View a Dataset</button>
 <script>
     function clickUpload() {
         location.href = "http://127.0.0.1:8000/datasets/upload"
     }
-
-    function clickView() {
-        location.href = "http://127.0.0.1:8000/datasets/view"
-    }
-
-		function clickCSV_View() {
+    function clickCSV_View() {
         location.href = "http://127.0.0.1:8000/datasets/csv_view"
     }
 </script>

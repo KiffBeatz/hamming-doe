@@ -12,14 +12,11 @@ class NN:
 			self.data = list(csv.reader(open(file_name, 'r')))
 		else:
 			self.data = data_list
-		self.nn = [] # list of neural networks, one for each output
-		self.x_labels = [] # list of labels for each feature
-		self.X_labels = [] # list of labels for each feature (normalized)
-		self.y_labels = [] # list of labels for each output
-		self.mean = None # list of mean of each feature
-
-		# Checking validity of input (TODO)
-
+			self.nn = [] # list of neural networks, one for each output
+			self.x_labels = [] # list of labels for each feature
+			self.X_labels = [] # list of labels for each feature (normalized)
+			self.y_labels = [] # list of labels for each output
+			self.mean = None # list of mean of each feature
 
 	""" FIT """
 	def fit(self):

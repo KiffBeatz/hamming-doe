@@ -5,65 +5,99 @@
 {% block content %}
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'></script>
     <style>
-        body {
-            background-color: lightblue;
-        }
-        .graph {
-            margin-top: 20px;
-        }
+        body { background-color: lightblue; }
+        .graph { margin-top: 20px; }
     </style>
     <div class="graph">
-        <canvas id="lineChart" width="1350" height="800"></canvas>
+        <canvas id="chart" width="1350" height="800"></canvas>
         <script>
-          var ctx = document.getElementById("lineChart").getContext("2d");
-          var lineChart = new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: {{ labels | safe}},
-                datasets: [{
-                    label: "Testing: {{ ylabel }}",
-                    backgroundColor: 'rgb(45,45,45)',
-                    borderColor: 'rgb(45,45,45)',
-                    borderWidth: 3,
-                    data: {{ values | safe}},
-                }]
-            },
-            options: {
-                responsive: false,
-                plugins: {
-                  title: {
-                    display: true,
-                    text: '{{ graph_title }}'
-                  }
-                }
+            const ctx = document.getElementById("chart").getContext("2d");
+            let type = {{ discrete | safe }}
+            if (type === 1) {
+                let barChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: {{ labels | safe }},
+                        datasets: [{
+                            label: "Testing: {{ ylabel }}",
+                            data: {{ values | safe }},
+                            backgroundColor: 'black',
+                            borderWidth: 3,
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '{{ graph_title }}'
+                            }
+                            },
+                        scales: {
+                            xAxes: [{
+                                display: false,
+                                barPercentage: 0.4,
+                            }]
+                        }
+                    }
+                })
             }
-          });
+            if (type === 0) {
+                const lineChart = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: {{ labels | safe}},
+                        datasets: [{
+                            label: "Testing: {{ ylabel }}",
+                            backgroundColor: 'rgb(45,45,45)',
+                            borderColor: 'rgb(45,45,45)',
+                            borderWidth: 3,
+                            data: {{ values | safe}},
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '{{ graph_title }}'
+                            }
+                        }
+                    }
+                });
+            }
         </script>
       </div>
       <div class="selectform">
-        <form>
-          <label>Input Feature</label>
-          <select id="xlist"></select>
-          <label>Output</label>
-          <select id="ylist"></select>
-          <button>Test feature</button>
+          <form action="/graph/" method="post">
+              {% csrf_token %}
 
-          <script>
-            var str = ''
-            var X = {{ xlabels | safe}}
-            X.forEach(function(x) {
-              str += '<option>'+ x + '</option>';
-            });
-            document.getElementById("xlist").innerHTML = str;
+              <label>Input Feature</label>
+              <select id="x_list" name="feature"></select>
 
-            str = ''
-            var Y = {{ ylabels | safe}}
-            Y.forEach(function(y) {
-              str += '<option>'+ y + '</option>';
-            });
-            document.getElementById("ylist").innerHTML = str;
-          </script>
-        </form>
+              <label>Output</label>
+              <select id="y_list" name="output"></select>
+
+              <button type="submit" name="dataset_choice" value={{ graph_title }}>Test feature</button>
+
+              <script>
+                  let str = ''
+                  let X = {{ xlabels | safe}}
+                      X.forEach(function(x) {
+                          str += '<option>'+ x + '</option>';
+                      });
+                      document.getElementById("x_list").innerHTML = str;
+
+                  str = ''
+                  let Y = {{ ylabels | safe}}
+                      Y.forEach(function(y) {
+                          str += '<option>'+ y + '</option>';
+                      });
+                      document.getElementById("y_list").innerHTML = str;
+              </script>
+          </form>
       </div>
 {% endblock %}
