@@ -67,6 +67,9 @@ def datasets(request):
 def csv_view(request):
     return render(request, "csv_view.html")
 
+def format(request):
+    return render(request, "format.html")
+
 def upload(request):
     if request.method == "POST":
         uploaded_file = request.FILES['file']

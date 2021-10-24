@@ -8,5 +8,6 @@ urlpatterns = [
     path('datasets/upload', views.upload, name='upload'),
 	path('datasets/csv_view', views.csv_view, name='csv_view'),
     path('datasets/view', views.view, name='view'),
+    path('datasets/format', views.format, name='format'),
     #path('stores/<int:store_id>/',stores_views.detail),
 ]

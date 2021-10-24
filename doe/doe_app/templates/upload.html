@@ -11,9 +11,13 @@
     </div>
 </form>
 <button class="ViewFiles" onclick="clickViewFiles()">View uploaded files</button>
+<button class="CSVFormat" onclick="CSVFormat()">Dataset format</button>
 <script>
     function clickViewFiles() {
         location.href = "http://127.0.0.1:8000/datasets/view"
+    }
+    function CSVFormat() {
+        location.href = "http://127.0.0.1:8000/datasets/format"
     }
 </script>
 {% endblock %}
