@@ -1,18 +1,31 @@
 {% extends "base.html" %}
 
-{% block title %}Datasets{% endblock %}
+{% block title %}Upload Datasets{% endblock %}
 
 {% block content %}
 
-<meta name="viewport" content="width=device-width, inital-scale=1">
-<button class="Upload" onclick="clickUpload()">Upload a Dataset</button>
-<button class="CSV_View" onclick="clickCSV_View()">View a Dataset</button>
+<form action="/datasets" class="dropzone dz">
+    {% csrf_token %}
+    <div class="fallback">
+        <input name="file" type="file" multiple />
+    </div>
+</form>
+<button class="ViewFiles" onclick="clickViewFiles()">View uploaded files</button>
+<button class="CSVFormat" onclick="CSVFormat()">Dataset format</button>
+<label class="l1" for="csvFileInput" style="color:rgba(255, 255, 255,
+1);">Preview my CSV file:</label><br>
+<form class="csvViewForm">
+    <input type="file" class="csvViewInput" id="csvFileInput" style="padding-bottom: 15px">
+</form>
+<form class="">
+    <table id="csvRoot"></table>
+</form>
 <script>
-    function clickUpload() {
-        location.href = "http://127.0.0.1:8000/datasets/upload"
+    function clickViewFiles() {
+        location.href = "http://127.0.0.1:8000/datasets/view"
     }
-    function clickCSV_View() {
-        location.href = "http://127.0.0.1:8000/datasets/csv_view"
+    function CSVFormat() {
+        location.href = "http://127.0.0.1:8000/datasets/format"
     }
 </script>
 {% endblock %}

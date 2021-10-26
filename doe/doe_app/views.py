@@ -61,16 +61,10 @@ def graph(request):
 
     return render(request, "graph.html", context)
 
-def datasets(request):
-    return render(request, "datasets.html")
-
-def csv_view(request):
-    return render(request, "csv_view.html")
-
 def format(request):
     return render(request, "format.html")
 
-def upload(request):
+def datasets(request):
     if request.method == "POST":
         uploaded_file = request.FILES['file']
         dataset_name = uploaded_file.name.split(".")[0]
@@ -89,7 +83,7 @@ def upload(request):
             dataset_types = split[1]
             dataset_data = decoded.split('\n', 2)[2]
             Dataset.objects.create(name=dataset_name, headers=dataset_headers, types=dataset_types, data=dataset_data)
-    return render(request, "upload.html")
+    return render(request, "datasets.html")
 
 def view(request):
     dataset_names = []
