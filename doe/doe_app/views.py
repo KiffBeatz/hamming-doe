@@ -79,10 +79,25 @@ def datasets(request):
         # Check if table exists in database
         check = Dataset.objects.filter(pk=dataset_name).exists()
         if not check:
+            #Get data
             dataset_headers = split[0]
             dataset_types = split[1]
             dataset_data = decoded.split('\n', 2)[2]
+            #Check data valid before adding to database
+            header_count = len(dataset_headers.split(","))
+            types_count = len(dataset_types.split(","))
+            if (header_count != types_count):
+                raise Exception("Inconsistent header/types length")
+            else: 
+                dataset_count_list = dataset_data.split("\n")
+                for a in dataset_count_list:
+                    if(a.split(",") != [""]):
+                        if (len(a.split(",")) != header_count):
+                            raise Exception("Inconsistent data length")
             Dataset.objects.create(name=dataset_name, headers=dataset_headers, types=dataset_types, data=dataset_data)
+        else:
+            raise Exception("Already uploaded database")
+            
     return render(request, "datasets.html")
 
 def view(request):
