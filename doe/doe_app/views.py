@@ -80,23 +80,35 @@ def datasets(request):
         check = Dataset.objects.filter(pk=dataset_name).exists()
         if not check:
             #Get data
+            if len(split) < 3:
+                raise Exception("Missing headers/types/data row.")
             dataset_headers = split[0]
             dataset_types = split[1]
             dataset_data = decoded.split('\n', 2)[2]
             #Check data valid before adding to database
             header_count = len(dataset_headers.split(","))
-            types_count = len(dataset_types.split(","))
+            types = dataset_types.split(",")
+            types_count = len(types)
+
+            for entries in types:
+                if entries != "D" and entries != "C" and entries != "O":
+                    raise Exception("Invalid data type. Expected: 'D/C/O' Got: '" + str(entries) + "'.")
+
             if (header_count != types_count):
-                raise Exception("Inconsistent header/types length")
+                raise Exception("Inconsistent header/types length. Headers: '" + str(header_count) + "' Types: '" + str(types_count) + "'.")
             else: 
                 dataset_count_list = dataset_data.split("\n")
+                if dataset_count_list[0] == "":
+                    raise Exception("'No data given.'")
+                line = 3
                 for a in dataset_count_list:
                     if(a.split(",") != [""]):
                         if (len(a.split(",")) != header_count):
-                            raise Exception("Inconsistent data length")
+                            raise Exception("Inconsistent data length. Expected: '" + str(header_count) + "' Data length: '" + str(len(a.split(","))) + "' on file line: '" + str(line) + "'.")
+                    line = line + 1
             Dataset.objects.create(name=dataset_name, headers=dataset_headers, types=dataset_types, data=dataset_data)
         else:
-            raise Exception("Already uploaded database")
+            raise Exception("Already uploaded database.")
             
     return render(request, "datasets.html")
 
