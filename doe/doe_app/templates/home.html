@@ -5,31 +5,38 @@
 
 {% block content %}
 <style>
-    body {
-        background-image: url("{% static 'nn.gif' %}");
-    }
+	body {
+		background-color: white;
+	}
     h1 {
         margin: 4px;
         color: white;
         font-size: 70px;
-        text-decoration: underline;
     }
-		p {
-			margin-top: 4px;
-			margin-left: 8px;
-			color: white;
-			font-size: 20px;
-		}
+	p {
+		margin-top: 4px;
+		margin-left: 8px;
+		color: white;
+		font-size: 20px;
+	}
+	#main {
+		margin-top: 50px;
+		padding: 25px;
+    	padding-left:  15px;
+    	padding-right: 15px;
+    	background-color: #00557A;
+		border:3px solid #00D8FF;
+    	border-radius: 25px 25px 25px 25px;
+		margin-left: auto;
+		margin-right: auto;
+	}
 </style>
-<div>
-    <h1>Dynamic DOE</h1>
-		<p>A dynamic design of experiment (DOE)<br> that statistically analyzes a set
-		of
-		experiment data,<br> using neural networks (NN), in order to find how the<br>
-		input
-		features effects the outputs of the experimentation.<br> Specifically,
-		finding
-		which input features can optimize the<br> output in order to reduce the
-		overall need of <br>extensive experimentation.</p>
+<img src="{% static 'test_tube.png' %}" class="floatRight" width="600" height="800">
+<div id="main">
+	<h1 class="display-1" style="text-align: center;">Dynamic DOE</h1>
+		<p style="text-align:center">A dynamic design of experiment (DOE) that statistically analyzes a set
+		of experiment data, using neural networks (NN), in order to find how the input features effects the outputs of the experimentation. Specifically, finding
+		which input features can optimize the output in order to reduce the
+		overall need of extensive experimentation.</p>
 </div>
 {% endblock %}

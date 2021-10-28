@@ -1,12 +1,15 @@
 body {
-    background-color: rgba(20,20,21,255);
+    background-color: white;
     background-repeat: no-repeat;
     background-size: cover;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     margin: auto;
+    border-width: 10px;
+    border-color: #0096FF;
 }
 .topnav {
-    background-color: #333;
+    border: 2px solid #00D8FF;
+    background-color: #0096FF;
     overflow: hidden;
 }
 .topnav a:hover {
@@ -18,7 +21,16 @@ body {
     float: left;
     color: #f2f2f2;
     text-align: center;
-    padding: 20px 27px;
+    padding: 10px 27px;
+    background-color: #00557A;
+    border:3px solid #00D8FF;
     text-decoration: none;
     font-size: 25px;
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.floatRight{
+    float:right;margin-left:80px
 }
