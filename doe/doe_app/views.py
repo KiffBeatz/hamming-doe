@@ -70,8 +70,7 @@ def datasets(request):
         dataset_name = uploaded_file.name.split(".")[0]
         # Check if it is a csv file
         if not uploaded_file.name.split(".")[1] == 'csv':
-            print("Please only upload .csv files")
-            return render(request, "datasets.html")
+            raise Exception("Please only upload .csv files.")
         # Read file and get strings
         read_file = uploaded_file.read()
         decoded = read_file.decode('utf-8')
