@@ -7,97 +7,258 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'></script>
     <style>
-        body { background-color: lightblue; }
-        .graph { margin-top: 20px; }
+        .column {
+            float: left;
+            width: 50%;
+        }
+
+        canvas {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        form {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .section_box {
+            width: fit-content;
+            background-color: white;
+            border-radius: 25px;
+            padding: 10px;
+            margin: auto;
+        }
+
+        .section_box2 {
+            width: 50%;
+            color: #eeeeee;
+            background-color: #00557A;
+            border-radius: 25px;
+            padding: 10px;
+            margin: auto;
+            text-align: center;
+        }
     </style>
-    <div class="graph">
-        <canvas id="chart" width="1350" height="800"></canvas>
-        <script>
-            const ctx = document.getElementById("chart").getContext("2d");
-            let type = {{ discrete | safe }}
-            if (type === 1) {
-                let barChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: {{ labels | safe }},
-                        datasets: [{
-                            label: "Testing: {{ ylabel }}",
-                            data: {{ values | safe }},
-                            backgroundColor: 'black',
-                            borderWidth: 3,
-                        }]
-                    },
-                    options: {
-                        responsive: false,
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: '{{ graph_title }}'
+
+    <div class="row">
+        <div class="section_box2" style="margin-top: 15px">
+            <h1 style="font-size: xxx-large;">Graph Visualization</h1>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 30px">
+        <div class="column">
+
+            <div class="section_box2" style="margin-top: 0px">
+                <h2 style="font-size: medium; font-weight: bold;">Performance of input feature with respect to output</h2>
+            </div>
+
+            <div class="section_box" style="margin-top: 15px">
+                <div class="graph">
+                    <canvas id="chart" width="750px" height="500px"></canvas>
+                    <script>
+                        var ctx = document.getElementById("chart").getContext("2d");
+
+                        let gradientStroke = ctx.createLinearGradient(0, 500, 0, 0);
+                        gradientStroke.addColorStop(1, 'green');
+                        gradientStroke.addColorStop(0, '#f49080');
+
+                        const myChart = new Chart(ctx, getConfig());
+
+                        function getConfig() {
+                            let type =
+                            {{ discrete | safe }}
+                            if (type === 1) {
+                                return config = {
+                                    type: 'bar',
+                                    data: {
+                                        labels: {{ labels | safe }},
+                                        datasets: [{
+                                            label: "Testing: {{ ylabel }}",
+                                            borderColor: "#80b6f4",
+                                            pointBorderColor: "#80b6f4",
+                                            pointBackgroundColor: "#80b6f4",
+                                            pointHoverBackgroundColor: "#80b6f4",
+                                            pointHoverBorderColor: "#80b6f4",
+                                            fill: false,
+                                            borderWidth: 4,
+                                            data: {{ values | safe }},
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: false,
+                                        plugins: {
+                                            title: {
+                                                display: true,
+                                                text: '{{ graph_title }}'
+                                            }
+                                        },
+                                        scales: {
+                                            xAxes: [{
+                                                display: false,
+                                                barPercentage: 0.69,
+                                                ticks: {
+                                                    padding: 5,
+                                                    fontSize: 18
+                                                }
+                                            }],
+                                            yAxes: [{
+                                                ticks: {
+                                                    padding: 5,
+                                                    fontSize: 18
+                                                }
+                                            }]
+                                        }
+                                    }
+                                }
                             }
-                            },
-                        scales: {
-                            xAxes: [{
-                                display: false,
-                                barPercentage: 0.4,
-                            }]
-                        }
-                    }
-                })
-            }
-            if (type === 0) {
-                const lineChart = new Chart(ctx, {
-                    type: "line",
-                    data: {
-                        labels: {{ labels | safe}},
-                        datasets: [{
-                            label: "Testing: {{ ylabel }}",
-                            backgroundColor: 'rgb(45,45,45)',
-                            borderColor: 'rgb(45,45,45)',
-                            borderWidth: 3,
-                            data: {{ values | safe}},
-                            fill: false
-                        }]
-                    },
-                    options: {
-                        responsive: false,
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: '{{ graph_title }}'
+                            if (type === 0) {
+                                return config = {
+                                    type: "line",
+                                    data: {
+                                        labels: {{ labels | safe}},
+                                        datasets: [{
+                                            label: "Testing: {{ ylabel }}",
+                                            borderColor: "#80b6f4",
+                                            pointBorderColor: "#80b6f4",
+                                            pointBackgroundColor: "#80b6f4",
+                                            pointHoverBackgroundColor: "#80b6f4",
+                                            pointHoverBorderColor: "#80b6f4",
+                                            pointBorderWidth: 10,
+                                            pointHoverRadius: 10,
+                                            pointHoverBorderWidth: 1,
+                                            pointRadius: 3,
+                                            fill: false,
+                                            borderWidth: 4,
+                                            data: {{ values | safe}},
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: false,
+                                        plugins: {
+                                            title: {
+                                                display: true,
+                                                text: '{{ graph_title }}'
+                                            }
+                                        },
+                                        scales: {
+                                            xAxes: [{
+                                                gridLines: {
+                                                    drawTicks: false,
+                                                    display: false
+                                                },
+                                                ticks: {
+                                                    padding: 5,
+                                                    fontSize: 18
+                                                }
+                                            }],
+                                            yAxes: [{
+                                                ticks: {
+                                                    padding: 5,
+                                                    fontSize: 18
+                                                }
+                                            }]
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
-                });
-            }
-        </script>
-      </div>
-      <div class="selectform">
-          <form action="/graph/" method="post">
-              {% csrf_token %}
 
-              <label>Input Feature</label>
-              <select id="x_list" name="feature"></select>
+                        function setGradient() {
+                            var checkBox = document.getElementById("myCheck");
+                            var x = myChart.config.data.datasets[0];
 
-              <label>Output</label>
-              <select id="y_list" name="output"></select>
+                            if (checkBox.checked === true) {
+                                x.borderColor = gradientStroke;
+                                x.pointBorderColor = gradientStroke;
+                                x.pointBackgroundColor = gradientStroke;
+                                x.pointHoverBackgroundColor = gradientStroke;
+                                x.pointHoverBorderColor = gradientStroke;
+                            } else {
+                                x.borderColor = "#80b6f4";
+                                x.pointBorderColor = "#80b6f4";
+                                x.pointBackgroundColor = "#80b6f4";
+                                x.pointHoverBackgroundColor = "#80b6f4";
+                                x.pointHoverBorderColor = "#80b6f4";
+                            }
 
-              <button type="submit" name="dataset_choice" value={{ graph_title }}>Test feature</button>
+                            myChart.update();
+                        }
+                    </script>
+                </div>
 
-              <script>
-                  let str = ''
-                  let X = {{ xlabels | safe}}
-                      X.forEach(function(x) {
-                          str += '<option>'+ x + '</option>';
-                      });
-                      document.getElementById("x_list").innerHTML = str;
+                <div class="gradientSelect" style="margin-top: 10px; text-align: center">
+                    <label>
+                        Show Gradient: <input type="checkbox" id="myCheck" onclick="setGradient()">
+                    </label>
+                </div>
 
-                  str = ''
-                  let Y = {{ ylabels | safe}}
-                      Y.forEach(function(y) {
-                          str += '<option>'+ y + '</option>';
-                      });
-                      document.getElementById("y_list").innerHTML = str;
-              </script>
-          </form>
-      </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="section_box2" style="margin-top: 200px">
+                <div class="heading2">
+                    <h2 style="font-size: medium; font-weight: bold;">Test a different feature</h2>
+                </div>
+            </div>
+
+            <div class="section_box" style="margin-top: 15px">
+                <form>
+                    {% csrf_token %}
+
+                    <label>Input Feature</label>
+                    <select id="x_list" name="feature"></select>
+
+                    <label>Output</label>
+                    <select id="y_list" name="output"></select>
+
+                    <script>
+                        let str = ''
+                        let X = {{ xlabels | safe}}
+                            X.forEach(function (x) {
+                                str += '<option>' + x + '</option>';
+                            });
+                        document.getElementById("x_list").innerHTML = str;
+
+                        str = ''
+                        let Y = {{ ylabels | safe}}
+                            Y.forEach(function (y) {
+                                str += '<option>' + y + '</option>';
+                            });
+                        document.getElementById("y_list").innerHTML = str;
+                    </script>
+                </form>
+            </div>
+
+            <div class="section_box" style="margin-top: 15px">
+                <form>
+                    <label>Minimize or Maximize a feature</label>
+                    <select id="x_list_minmax" name="maxmin"></select>
+
+                    <label>Output</label>
+                    <select id="y_list" name="output"></select>
+
+                    <script>
+                        let str = ''
+                        let X = {{ xlabels | safe}}
+                            X.forEach(function (x) {
+                                str += '<option>' + x + '</option>';
+                            });
+                        document.getElementById("x_list").innerHTML = str;
+                    </script>
+                </form>
+            </div>
+
+            <div class="section_box" style="margin-top: 15px">
+                <form action="/graph/" method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="dataset_choice" value={{ graph_title }}>Test feature(s)</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}

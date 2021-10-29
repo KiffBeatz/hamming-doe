@@ -2,15 +2,41 @@
 
 {% block title %}View Datasets{% endblock %}
 {% block content %}
+    <style>
+        .section_box {
+            width: fit-content;
+            border-radius: 25px;
+            margin-top: 20px;
+            padding: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            background: #00557A;
+        }
+        .section_box2 {
+            width: 50%;
+            border-radius: 25px;
+            margin-top: 20px;
+            padding: 10px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+    <form action="/graph/" method="post">
+        {% csrf_token %}
 
-<form action="/graph/" method="post">
-    {% csrf_token %}
-    <h2 style="color: #eeeeee; margin-left: 7px; margin-top: 7px">Choose a dataset to visualize graphically</h2>
-    <div class="list-group">
-        {% for name in names %}
-        <button type="submit" class="list-group-item list-group-item-action" name="dataset_choice" value="{{ name }}">{{ name }}</button>
-        {% endfor %}
-    </div>
-</form>
+        <div class="section_box">
+            <h2 style="color: #eeeeee; margin-left: 7px; margin-top: 7px">Choose a dataset to visualize graphically</h2>
+        </div>
+        <div class="section_box2">
+            <div class="list-group">
+                {% for name in names %}
+                    <button type="submit" class="list-group-item list-group-item-action" name="dataset_choice"
+                            value="{{ name }}">{{ name }}</button>
+                {% endfor %}
+            </div>
+        </div>
+
+
+    </form>
 
 {% endblock %}
