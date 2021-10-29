@@ -1,5 +1,5 @@
 body {
-		background-image: url('background.png');
+	background-image: url('background.png');
     background-repeat: no-repeat;
     background-size: cover;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -8,7 +8,7 @@ body {
     border-color: #0096FF;
 }
 .topnav {
-		background-color: #00557A;
+	background-color: #00557A;
     overflow: hidden;
 }
 .topnav a:hover {

@@ -8,16 +8,16 @@ table {
     font-size: 14px;
     margin-top: 10px;
     margin-left: auto;
-		margin-right: auto;
+	margin-right: auto;
 }
 
 .ViewFiles{
-		position:relative;
+	position:relative;
   	display: grid;
-		margin-left: auto;
-		margin-right: auto;
-		margin-top:10px;
-		width: 30%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top:10px;
+	width: 30%;
   	padding: 15px 25px;
   	font-size: 24px;
   	text-align: center;
@@ -27,7 +27,7 @@ table {
   	background-color: #00557A;
   	border: none;
   	border-radius: 15px;
-		box-shadow: 0 9px #999;
+	box-shadow: 0 9px #999;
 }
 
 .CSVFormat{

@@ -3,8 +3,15 @@
 {% block title %}Upload Datasets{% endblock %}
 
 {% block content %}
+<script>
+    Dropzone.options.myDropzone = {
+        acceptedFiles: ".csv",
+        dictDuplicateFile: "Duplicate Files Cannot Be Uploaded",
+        preventDuplicates: true,
+    };
+</script>
 
-<form action="/datasets/" class="dropzone dz">
+<form action="/datasets/" class="dropzone dz" id="my-dropzone">
     {% csrf_token %}
     <div class="fallback">
         <input name="file" type="file" multiple />
