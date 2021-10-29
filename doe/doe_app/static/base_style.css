@@ -1,5 +1,5 @@
 body {
-    background-color: white;
+		background-image: url('background.png');
     background-repeat: no-repeat;
     background-size: cover;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -8,12 +8,11 @@ body {
     border-color: #0096FF;
 }
 .topnav {
-    border: 2px solid #00D8FF;
-    background-color: #0096FF;
+		background-color: #00557A;
     overflow: hidden;
 }
 .topnav a:hover {
-    background-color: #ddd;
+    background-color: white;
     color: black;
 }
 /* Style the links inside the navigation bar */
@@ -23,7 +22,6 @@ body {
     text-align: center;
     padding: 10px 27px;
     background-color: #00557A;
-    border:3px solid #00D8FF;
     text-decoration: none;
     font-size: 25px;
     margin-left: 20px;

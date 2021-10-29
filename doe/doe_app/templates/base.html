@@ -15,14 +15,16 @@
 		<script type="module" src="{% static 'csv_view.js' %}"></script>
     <!-- Custom CSS and JS-->
     <link rel="stylesheet" href="{% static 'base_style.css' %}">
+		<link rel="stylesheet" href="{% static 'datasets.css' %}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <title>{% block title %}Dynamic DOE{% endblock %}</title>
 </head>
 <body>
     <div class="topnav">
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'view' %}">Graph</a>
-        <a href="{% url 'datasets' %}">Datasets</a>
+        <a href="{% url 'home' %}">Home <i class="fa fa-home"></i></a>
+        <a href="{% url 'view' %}">Graph <i class="fa fa-line-chart"></i></a>
+        <a href="{% url 'datasets' %}">Datasets <i class="fa fa-file-o"></i></a>
     </div>
 
     <div id="content">

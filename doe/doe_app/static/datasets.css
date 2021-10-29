@@ -1,0 +1,124 @@
+table {
+    border-collapse: collapse;
+    border-radius: 5px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    font-family: "Quicksand", sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-left: auto;
+		margin-right: auto;
+}
+
+.ViewFiles{
+		position:relative;
+  	display: grid;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top:10px;
+		width: 30%;
+  	padding: 15px 25px;
+  	font-size: 24px;
+  	text-align: center;
+  	cursor: pointer;
+  	outline: none;
+  	color: #fff;
+  	background-color: #00557A;
+  	border: none;
+  	border-radius: 15px;
+		box-shadow: 0 9px #999;
+}
+
+.CSVFormat{
+		position:relative;
+    display: grid;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 10px;
+		width: 30%;
+    padding: 15px 25px;
+  	font-size: 24px;
+  	text-align: center;
+  	cursor: pointer;
+  	outline: none;
+  	color: #fff;
+  	background-color: #00557A;
+  	border: none;
+  	border-radius: 15px;
+  	box-shadow: 0 9px #999;
+}
+
+.ViewFiles:hover {background-color: darkblue}
+
+.ViewFiles:active {
+  background-color: darkblue;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.CSVFormat:hover {background-color: darkblue}
+
+.CSVFormat:active {
+  background-color: darkblue;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.l1 {
+		display: block;
+    text-align: center;
+		margin-top:10px;
+		margin-bottom: 1px;
+}
+
+.csvViewForm {
+		position:relative;
+		display: grid;
+		margin-left: auto;
+    margin-right: auto;
+    margin-top: 1px;
+		width: 30%;
+		padding: 15px 25px;
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    background-color: #00557A;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+}
+
+th {
+    background-image: url('background2.png');
+    color: black;
+    text-align: left;
+}
+
+th,
+td {
+    padding: 10px 20px;
+}
+
+tr:nth-child(odd) {
+  background-image: url('background2.png');
+}
+
+tr:nth-child(even) {
+    background: #eeeeee;
+}
+
+
+.dz {
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		height: 200px;
+		width: 800px;
+		border-radius: 30px;
+    border: solid;
+		border-color: gray;
+}
