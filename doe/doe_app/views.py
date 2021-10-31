@@ -10,56 +10,98 @@ def home(request):
     return render(request, 'home.html')
 
 def graph(request):
-    # Variables
-    global discrete
-    labels, values = [], []
+    if request.method != 'POST':
+        return view(request)
 
-    # Request Input
-    graph_title = "FRACTIONAL_FACTORIAL_RUNS"   #default get dataset
     if request.method == 'POST':
         chosen_name = request.POST['dataset_choice']
         dataset_object = Dataset.objects.filter(name=chosen_name)
         graph_title = dataset_object[0].name
-        if 'output' not in request.POST:
-            output_label = ''
-        else:
-            output_label = request.POST['output']
-        if 'feature' not in request.POST:
-            feature_label = ''
-        else:
-            feature_label = request.POST['feature']
 
-    # Load data from DB & Train
-    dataset_list = getDatasetList(graph_title)
-    test = neural.NN(dataset_list, 'doe_app/neural_data/{file_name}.csv'.format(file_name = graph_title))
-    test.fit()
+        # Load data from DB & Train
+        dataset_list = getDatasetList(graph_title)
+        nn = neural.NN(dataset_list, 'doe_app/neural_data/{file_name}.csv'.format(file_name=graph_title))
+        nn.fit()
 
-    # Use Score data to build context for html
-    num_feature, num_output = getIndex(test.x_labels, feature_label), getIndex(test.y_labels, output_label)
-    score_data = test.score(num_feature, num_output)
+        # Scores of each feature for NN
+        scores = []
+        for j in range(len(nn.y_labels)):
+            for i in range(len(nn.x_labels)):
+                values = []
+                labels = []
+                score = nn.score(i, j)
+                for s in score:
+                    if isinstance(s, str):
+                        if s[0] == "C":
+                            labels.append(s.split("=")[1][1:])
+                        elif s[0] == "D":
+                            labels.append(s.split(":")[1])
+                    else:
+                        values.append(s[0])
+                data = [values, labels]
+                scores.append({nn.x_labels[i] + "&" + nn.y_labels[j]:data})
 
-    for i in range(len(score_data)):
-        if (i % 2 == 0):
-            labels.append(score_data[i].split(":")[1])
-        else:
-            values.append(score_data[i][0].astype(np.float64))
+        context = {
+            'scores' : scores,
+            'xlabels': nn.x_labels,
+            'ylabels': nn.y_labels,
+        }
 
-    if (test.x_labels[num_feature].split(":")[0] == "C"):
-        discrete = 0
-    if (test.x_labels[num_feature].split(":")[0] == "D"):
-        discrete = 1
-
-    context = {
-        'discrete' : discrete,
-        'labels': labels,
-        'values': values,
-        'ylabel': test.y_labels[num_output].split(":")[1],
-        'xlabels': test.x_labels,
-        'ylabels': test.y_labels,
-        'graph_title': graph_title
-    }
-
-    return render(request, "graph.html", context)
+        return render(request, "graph.html", context)
+#
+# def graph(request):
+#     # Variables
+#     global discrete
+#     labels, values = [], []
+#
+#     # Request Input
+#     graph_title = "FRACTIONAL_FACTORIAL_RUNS"   #default get dataset
+#     if request.method == 'POST':
+#         chosen_name = request.POST['dataset_choice']
+#         dataset_object = Dataset.objects.filter(name=chosen_name)
+#         graph_title = dataset_object[0].name
+#         if 'output' not in request.POST:
+#             output_label = ''
+#         else:
+#             output_label = request.POST['output']
+#         if 'feature' not in request.POST:
+#             feature_label = ''
+#         else:
+#             feature_label = request.POST['feature']
+#
+#     # Load data from DB & Train
+#     dataset_list = getDatasetList(graph_title)
+#     test = neural.NN(dataset_list, 'doe_app/neural_data/{file_name}.csv'.format(file_name = graph_title))
+#     test.fit()
+#
+#     # Use Score data to build context for html
+#     num_feature, num_output = getIndex(test.x_labels, feature_label), getIndex(test.y_labels, output_label)
+#     score_data = test.score(num_feature, num_output)
+#
+#     for i in range(len(score_data)):
+#         if (i % 2 == 0):
+#             labels.append(score_data[i].split(":")[1])
+#         else:
+#             values.append(score_data[i][0].astype(np.float64))
+#
+#     if (test.x_labels[num_feature].split(":")[0] == "C"):
+#         discrete = 0
+#     if (test.x_labels[num_feature].split(":")[0] == "D"):
+#         discrete = 1
+#
+#     context = {
+#         'discrete' : discrete,
+#         'labels': labels,
+#         'values': values,
+#         'ylabel': test.y_labels[num_output].split(":")[1],
+#         'xlabels': test.x_labels,
+#         'ylabels': test.y_labels,
+#         'graph_title': graph_title
+#     }
+#
+#     print(context)
+#
+#     return render(request, "graph.html", context)
 
 def format(request):
     return render(request, "format.html")

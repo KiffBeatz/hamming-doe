@@ -7,21 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'></script>
     <style>
-        .column {
-            float: left;
-            width: 50%;
-        }
-
-        canvas {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        form {
-            padding: 10px;
-            text-align: center;
-        }
-
         .section_box {
             width: fit-content;
             background-color: white;
@@ -30,235 +15,265 @@
             margin: auto;
         }
 
-        .section_box2 {
-            width: 50%;
+        .heading {
+            width: fit-content;
             color: #eeeeee;
             background-color: #00557A;
             border-radius: 25px;
             padding: 10px;
             margin: auto;
-            text-align: center;
         }
     </style>
 
-    <div class="row">
-        <div class="section_box2" style="margin-top: 15px">
-            <h1 style="font-size: xxx-large;">Graph Visualization</h1>
-        </div>
+
+    {# HEADINGS #}
+    <div class="heading" style="margin-top: 15px">
+        <h1 style="font-size: xxx-large;">Graph Visualization</h1>
     </div>
-
-    <div class="row" style="margin-top: 30px">
-        <div class="column">
-
-            <div class="section_box2" style="margin-top: 0px">
-                <h2 style="font-size: medium; font-weight: bold;">Performance of input feature with respect to output</h2>
-            </div>
-
-            <div class="section_box" style="margin-top: 15px">
-                <div class="graph">
-                    <canvas id="chart" width="750px" height="500px"></canvas>
-                    <script>
-                        var ctx = document.getElementById("chart").getContext("2d");
-
-                        let gradientStroke = ctx.createLinearGradient(0, 500, 0, 0);
-                        gradientStroke.addColorStop(1, 'green');
-                        gradientStroke.addColorStop(0, '#f49080');
-
-                        const myChart = new Chart(ctx, getConfig());
-
-                        function getConfig() {
-                            let type =
-                            {{ discrete | safe }}
-                            if (type === 1) {
-                                return config = {
-                                    type: 'bar',
-                                    data: {
-                                        labels: {{ labels | safe }},
-                                        datasets: [{
-                                            label: "Testing: {{ ylabel }}",
-                                            borderColor: "#80b6f4",
-                                            pointBorderColor: "#80b6f4",
-                                            pointBackgroundColor: "#80b6f4",
-                                            pointHoverBackgroundColor: "#80b6f4",
-                                            pointHoverBorderColor: "#80b6f4",
-                                            fill: false,
-                                            borderWidth: 4,
-                                            data: {{ values | safe }},
-                                        }]
-                                    },
-                                    options: {
-                                        responsive: false,
-                                        plugins: {
-                                            title: {
-                                                display: true,
-                                                text: '{{ graph_title }}'
-                                            }
-                                        },
-                                        scales: {
-                                            xAxes: [{
-                                                display: false,
-                                                barPercentage: 0.69,
-                                                ticks: {
-                                                    padding: 5,
-                                                    fontSize: 18
-                                                }
-                                            }],
-                                            yAxes: [{
-                                                ticks: {
-                                                    padding: 5,
-                                                    fontSize: 18
-                                                }
-                                            }]
-                                        }
-                                    }
-                                }
-                            }
-                            if (type === 0) {
-                                return config = {
-                                    type: "line",
-                                    data: {
-                                        labels: {{ labels | safe}},
-                                        datasets: [{
-                                            label: "Testing: {{ ylabel }}",
-                                            borderColor: "#80b6f4",
-                                            pointBorderColor: "#80b6f4",
-                                            pointBackgroundColor: "#80b6f4",
-                                            pointHoverBackgroundColor: "#80b6f4",
-                                            pointHoverBorderColor: "#80b6f4",
-                                            pointBorderWidth: 10,
-                                            pointHoverRadius: 10,
-                                            pointHoverBorderWidth: 1,
-                                            pointRadius: 3,
-                                            fill: false,
-                                            borderWidth: 4,
-                                            data: {{ values | safe}},
-                                        }]
-                                    },
-                                    options: {
-                                        responsive: false,
-                                        plugins: {
-                                            title: {
-                                                display: true,
-                                                text: '{{ graph_title }}'
-                                            }
-                                        },
-                                        scales: {
-                                            xAxes: [{
-                                                gridLines: {
-                                                    drawTicks: false,
-                                                    display: false
-                                                },
-                                                ticks: {
-                                                    padding: 5,
-                                                    fontSize: 18
-                                                }
-                                            }],
-                                            yAxes: [{
-                                                ticks: {
-                                                    padding: 5,
-                                                    fontSize: 18
-                                                }
-                                            }]
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        function setGradient() {
-                            var checkBox = document.getElementById("myCheck");
-                            var x = myChart.config.data.datasets[0];
-
-                            if (checkBox.checked === true) {
-                                x.borderColor = gradientStroke;
-                                x.pointBorderColor = gradientStroke;
-                                x.pointBackgroundColor = gradientStroke;
-                                x.pointHoverBackgroundColor = gradientStroke;
-                                x.pointHoverBorderColor = gradientStroke;
-                            } else {
-                                x.borderColor = "#80b6f4";
-                                x.pointBorderColor = "#80b6f4";
-                                x.pointBackgroundColor = "#80b6f4";
-                                x.pointHoverBackgroundColor = "#80b6f4";
-                                x.pointHoverBorderColor = "#80b6f4";
-                            }
-
-                            myChart.update();
-                        }
-                    </script>
-                </div>
-
-                <div class="gradientSelect" style="margin-top: 10px; text-align: center">
-                    <label>
-                        Show Gradient: <input type="checkbox" id="myCheck" onclick="setGradient()">
-                    </label>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="column">
-            <div class="section_box2" style="margin-top: 200px">
-                <div class="heading2">
-                    <h2 style="font-size: medium; font-weight: bold;">Test a different feature</h2>
-                </div>
-            </div>
-
-            <div class="section_box" style="margin-top: 15px">
-                <form>
-                    {% csrf_token %}
-
-                    <label>Input Feature</label>
-                    <select id="x_list" name="feature"></select>
-
-                    <label>Output</label>
-                    <select id="y_list" name="output"></select>
-
-                    <script>
-                        let str = ''
-                        let X = {{ xlabels | safe}}
-                            X.forEach(function (x) {
-                                str += '<option>' + x + '</option>';
-                            });
-                        document.getElementById("x_list").innerHTML = str;
-
-                        str = ''
-                        let Y = {{ ylabels | safe}}
-                            Y.forEach(function (y) {
-                                str += '<option>' + y + '</option>';
-                            });
-                        document.getElementById("y_list").innerHTML = str;
-                    </script>
-                </form>
-            </div>
-
-            <div class="section_box" style="margin-top: 15px">
-                <form>
-                    <label>Minimize or Maximize a feature</label>
-                    <select id="x_list_minmax" name="maxmin"></select>
-
-                    <label>Output</label>
-                    <select id="y_list" name="output"></select>
-
-                    <script>
-                        let str = ''
-                        let X = {{ xlabels | safe}}
-                            X.forEach(function (x) {
-                                str += '<option>' + x + '</option>';
-                            });
-                        document.getElementById("x_list").innerHTML = str;
-                    </script>
-                </form>
-            </div>
-
-            <div class="section_box" style="margin-top: 15px">
-                <form action="/graph/" method="post">
-                    {% csrf_token %}
-                    <button type="submit" name="dataset_choice" value={{ graph_title }}>Test feature(s)</button>
-                </form>
-            </div>
-        </div>
+    <div class="heading" style="margin-top: 20px; margin-bottom: 10px">
+        <h2 style="font-size: medium; font-weight: bold;">Output of trained neural network</h2>
     </div>
 
 
+    {# GRAPH SECTION #}
+    <div class="section_box">
+        <div>
+            <h3 id="chart_heading" style="
+                font-size: large;
+                text-align: center;
+                color: #00557A
+            ">
+
+            </h3>
+        </div>
+
+        <div class="graph">
+            <canvas id="chart" width="1000px" height="500px"></canvas>
+            <script>
+                let ctx = document.getElementById("chart").getContext("2d");
+
+                let gradientStroke = ctx.createLinearGradient(0, 500, 0, 0);
+                gradientStroke.addColorStop(1, 'green');
+                gradientStroke.addColorStop(0, '#f49080');
+
+
+                let myChart = new Chart(ctx, {type: 'bar'});
+                myChart = new Chart(ctx, getConfig());
+
+                function getConfig() {
+                    let scores = {{ scores | safe }};
+                    let x = "";
+                    let y = "";
+
+                    if (document.getElementById("feature_output_form") != null) {
+                        x = document.getElementById("x_list").value;
+                        y = document.getElementById("y_list").value;
+                    } else {
+                        let key = Object.keys(scores[0])[0];
+                        x = key.split("&")[0]
+                        y = key.split("&")[1]
+                    }
+
+                    document.getElementById("chart_heading").innerHTML = "Testing: " + y.split(":")[1];
+
+
+                    let type = getType(x)
+                    let labels = getLabels(x, y);
+                    let values = getValues(x, y);
+                    let config = {};
+
+                    if (type === 1) {
+                        config = {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    borderColor: "#80b6f4",
+                                    pointBorderColor: "#80b6f4",
+                                    pointBackgroundColor: "#80b6f4",
+                                    pointHoverBackgroundColor: "#80b6f4",
+                                    pointHoverBorderColor: "#80b6f4",
+                                    fill: false,
+                                    borderWidth: 4,
+                                    data: values,
+                                }]
+                            },
+                            options: {
+                                legend: {
+                                    display: false
+                                },
+                                responsive: false,
+                                scales: {
+                                    xAxes: [{
+                                        ticks: {
+                                            padding: 5,
+                                            fontSize: 18
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        ticks: {
+                                            padding: 5,
+                                            fontSize: 18
+                                        }
+                                    }]
+                                }
+                            }
+                        }
+                    }
+                    if (type === 0) {
+                        config = {
+                            type: "line",
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    borderColor: "#80b6f4",
+                                    pointBorderColor: "#80b6f4",
+                                    pointBackgroundColor: "#80b6f4",
+                                    pointHoverBackgroundColor: "#80b6f4",
+                                    pointHoverBorderColor: "#80b6f4",
+                                    pointBorderWidth: 10,
+                                    pointHoverRadius: 10,
+                                    pointHoverBorderWidth: 1,
+                                    pointRadius: 3,
+                                    fill: false,
+                                    borderWidth: 4,
+                                    data: values,
+                                }]
+                            },
+                            options: {
+                                legend: {
+                                    display: false
+                                },
+                                responsive: false,
+                                scales: {
+                                    xAxes: [{
+                                        gridLines: {
+                                            drawTicks: false,
+                                            display: false
+                                        },
+                                        ticks: {
+                                            padding: 5,
+                                            fontSize: 18
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        ticks: {
+                                            padding: 5,
+                                            fontSize: 18
+                                        }
+                                    }]
+                                }
+                            }
+                        }
+                    }
+
+                    return config;
+                }
+
+                function getValues(x, y) {
+                    let scores = {{ scores | safe }};
+                    let arr
+
+                    Object.keys(scores).forEach(k => {
+                        let dict = scores[k];
+                        Object.keys(dict).forEach(key => {
+                            let temp = key.split("&");
+                            if (temp[0] === x && temp[1] === y) {
+                                arr = dict[key][0];
+                            }
+                        });
+                    });
+
+                    return arr;
+                }
+
+                function getLabels(x, y) {
+                    let scores = {{ scores | safe }};
+                    let arr;
+
+                    Object.keys(scores).forEach(k => {
+                        let dict = scores[k];
+                        Object.keys(dict).forEach(key => {
+                            let temp = key.split("&");
+                            if (temp[0] === x && temp[1] === y) {
+                                arr = dict[key][1];
+                            }
+                        });
+                    });
+
+                    return arr;
+                }
+
+                function getType(x) {
+                    if (x[0] === "C") {
+                        return 0;
+                    }
+                    if (x[0] === "D") {
+                        return 1;
+                    }
+                    return -1;
+                }
+
+                function setConfig() {
+                    myChart.config = getConfig();
+                    myChart.update();
+                }
+
+                function setGradient() {
+                    let checkBox = document.getElementById("myCheck");
+                    let x = myChart.config.data.datasets[0];
+
+                    if (checkBox.checked === true) {
+                        x.borderColor = gradientStroke;
+                        x.pointBorderColor = gradientStroke;
+                        x.pointBackgroundColor = gradientStroke;
+                        x.pointHoverBackgroundColor = gradientStroke;
+                        x.pointHoverBorderColor = gradientStroke;
+                    } else {
+                        x.borderColor = "#80b6f4";
+                        x.pointBorderColor = "#80b6f4";
+                        x.pointBackgroundColor = "#80b6f4";
+                        x.pointHoverBackgroundColor = "#80b6f4";
+                        x.pointHoverBorderColor = "#80b6f4";
+                    }
+
+                    myChart.update();
+                }
+            </script>
+        </div>
+
+        <div class="gradientSelect" style="margin-top: 10px; text-align: center">
+            <label>
+                Show Gradient: <input type="checkbox" id="myCheck" onclick="setGradient()">
+            </label>
+        </div>
+
+        <div class="section_box" style="margin-top: 15px">
+            <form id="feature_output_form">
+                {% csrf_token %}
+
+                <label>Input Feature</label>
+                <select id="x_list" name="feature" onchange="setConfig()"></select>
+
+                <label>Output</label>
+                <select id="y_list" name="output" onchange="setConfig()"></select>
+
+                <script>
+                    let str = ''
+                    let X = {{ xlabels | safe}}
+                        X.forEach(function (x) {
+                            str += '<option>' + x + '</option>';
+                        });
+                    document.getElementById("x_list").innerHTML = str;
+
+                    str = ''
+                    let Y = {{ ylabels | safe}}
+                        Y.forEach(function (y) {
+                            str += '<option>' + y + '</option>';
+                        });
+                    document.getElementById("y_list").innerHTML = str;
+                </script>
+            </form>
+        </div>
+    </div>
 {% endblock %}
