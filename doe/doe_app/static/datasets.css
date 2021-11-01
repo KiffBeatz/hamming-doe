@@ -30,25 +30,6 @@ table {
 	box-shadow: 0 9px #999;
 }
 
-.CSVFormat{
-		position:relative;
-    display: grid;
-		margin-left: auto;
-		margin-right: auto;
-		margin-top: 10px;
-		width: 30%;
-    padding: 15px 25px;
-  	font-size: 24px;
-  	text-align: center;
-  	cursor: pointer;
-  	outline: none;
-  	color: #fff;
-  	background-color: #00557A;
-  	border: none;
-  	border-radius: 15px;
-  	box-shadow: 0 9px #999;
-}
-
 .ViewFiles:hover {background-color: darkblue}
 
 .ViewFiles:active {
@@ -57,13 +38,6 @@ table {
   transform: translateY(4px);
 }
 
-.CSVFormat:hover {background-color: darkblue}
-
-.CSVFormat:active {
-  background-color: darkblue;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}
 
 .l1 {
 		display: block;
