@@ -15,11 +15,32 @@ def graph(request):
 
     if request.method == 'POST':
         chosen_name = request.POST['dataset_choice']
+        final_data = ""
+        new_data = ""
+        i = 1
+        while new_data != "end":
+            new_data = request.POST.get("input_data_" + str(i), "end")
+            if new_data != "end":
+                final_data = final_data + new_data + ","
+            i = i + 1
+
+        i = 1
+        while new_data != "end2":
+            new_data = request.POST.get("output_data_" + str(i), "end2")
+            if new_data != "end2":
+                final_data = final_data + new_data + ","                
+            i = i + 1
+
+        final_data = final_data[:-1]
+        #TODO Fix glitch where new_data is uploaded again on refresh
+
+        dataset_list = getDatasetList(chosen_name, final_data)
         dataset_object = Dataset.objects.filter(name=chosen_name)
+        
         graph_title = dataset_object[0].name
 
         # Load data from DB & Train
-        dataset_list = getDatasetList(graph_title)
+        
         nn = neural.NN(dataset_list, 'doe_app/neural_data/{file_name}.csv'.format(file_name=graph_title))
         nn.fit()
 
@@ -42,6 +63,7 @@ def graph(request):
                 scores.append({nn.x_labels[i] + "&" + nn.y_labels[j]:data})
 
         context = {
+            'chosen_name' : chosen_name,
             'scores' : scores,
             'xlabels': nn.x_labels,
             'ylabels': nn.y_labels,
@@ -167,7 +189,7 @@ def view(request):
 
 
 # Reads data from the database and formats it into a list that the neural network accepts
-def getDatasetList(dataset_name):
+def getDatasetList(dataset_name, new_data):
     check = Dataset.objects.filter(pk=dataset_name).exists()
     if check:
         current_dataset = Dataset.objects.filter(pk=dataset_name).values()[0]
@@ -184,6 +206,11 @@ def getDatasetList(dataset_name):
             if(a.split(",") != [""]):
                 final_list.append(a.split(","))
 
+        if len(new_data.split(",")) == len(dataset_headers):
+            if not ("" in new_data.split(",")):
+                final_list.append(new_data.split(","))
+                new =  current_dataset["data"] + new_data + "\r\n"
+                Dataset.objects.filter(pk=dataset_name).update(name=dataset_name, headers=current_dataset["headers"], types=current_dataset["types"], data = new)            
         return final_list
     
     return None

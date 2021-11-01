@@ -47,6 +47,28 @@
             </h3>
         </div>
 
+        <div>
+            <form action="/graph/" method="post">
+                {% csrf_token %}
+                <div>
+                    {% for value in xlabels %}
+                    <div>
+                        {{ value }}
+                        <input type="text" name="input_data_{{ forloop.counter }}" value="" size="10px"> 
+                    </div>
+                    {% endfor %}
+
+                    {% for value in ylabels %}
+                    <div>
+                        {{ value }}
+                        <input type="text" name="output_data_{{ forloop.counter }}" value="" size="10px"> 
+                    </div>
+                    {% endfor %}
+                    <button type="submit" name="dataset_choice" value="{{ chosen_name }}">Add Data Value</button>
+                </div>
+            </form>
+        </div>
+
         <div class="graph">
             <canvas id="chart" width="1000px" height="400px"></canvas>
             <script>
