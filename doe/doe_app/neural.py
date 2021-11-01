@@ -1,4 +1,5 @@
 from sklearn.neural_network import MLPRegressor
+from collections import Counter
 import numpy as np
 import csv
 
@@ -12,11 +13,12 @@ class NN:
 			self.data = list(csv.reader(open(file_name, 'r')))
 		else:
 			self.data = data_list
-			self.nn = [] # list of neural networks, one for each output
-			self.x_labels = [] # list of labels for each feature
-			self.X_labels = [] # list of labels for each feature (normalized)
-			self.y_labels = [] # list of labels for each output
-			self.mean = None # list of mean of each feature
+		self.nn = [] # list of neural networks, one for each output
+		self.x_labels = [] # list of labels for each feature
+		self.X_labels = [] # list of labels for each feature (normalized)
+		self.y_labels = [] # list of labels for each output
+		self.min = [] # list of min of each feature
+		self.max = [] # list of max of each feature
 
 	""" FIT """
 	def fit(self):
@@ -46,43 +48,49 @@ class NN:
 				y_list.append(A[:,i])
 				self.y_labels.append("O:" + labels[i])
 
-
 		#Normalization
 		d = i_c + i_d
-		mean_list = []
 		for i in range(d):
-			if (data_types[i] == "D"):
-				#Discrete Normalization
+			if (data_types[i] == "D"): #Discrete Normalization
 				disc_vals = np.unique(x_list[i])
-				mean_list.append(1)
+				min_val = Counter(x_list[i].tolist()).most_common()[-1][0]
+				max_val = Counter(x_list[i].tolist()).most_common(1)[0][0]
+
 				for dis in disc_vals:
-					mean_list.append(0)
+					if (dis == max_val):
+						self.min.append(0)
+						self.max.append(1)
+					elif (dis == min_val):
+						self.min.append(1)
+						self.max.append(0)
+					else:
+						self.min.append(0)
+						self.max.append(0)
+
 					x = np.zeros(N, dtype=int)
 					for j in range(N):
 						if (x_list[i][j] == dis):
 							x[j] = 1
+
 					X_list.append(x)
 					self.X_labels.append("D:" + labels[i] + " = " + dis)
-				mean_list.pop()
-				#labels[i] = str(len(disc_vals)-1) + labels[i]
+
 			elif (data_types[i] == "C"):
 				#Continous Standardization
 				x = np.array(x_list[i]).astype(np.float64)
 				x = (x - x.mean()) / (x.std())
 				X_list.append(x)
-				mean_list.append(x.mean())
+				self.min.append(np.min(x))
+				self.max.append(np.max(x))
 				self.X_labels.append("C:" + labels[i])
 
-
 		# Convert lists
-		self.mean = np.array(mean_list)
 		d = len(X_list)
 		X = np.zeros((N, d))
 		for i in range(d):
 			x = X_list[i]
 			for j in range(N):
 				X[j][i] = x[j]
-
 
 		# Neural Network outputs
 		for y in y_list:
@@ -102,37 +110,85 @@ class NN:
 			return -1
 
 		if (self.x_labels[feature].split(":")[0] == "D"):
-			i_list = []
-			a = self.mean
+			I = []
 			ret = []
 			for i in range(len(self.X_labels)):
 				if self.x_labels[feature] in self.X_labels[i]:
-					i_list.append(i)
+					I.append(i)
+					ret.append("")
+					ret.append(0)
 
-			for i in i_list:
-				a[i] = 0
+			count = 0
+			for i in I:
+				ret[count*2] = self.X_labels[i]
 
-			for i in i_list:
+				a = np.array(self.min)
+				for j in I:
+					a[j] = 0
 				a[i] = 1
-				ret.append(self.X_labels[i])
-				ret.append(self.nn[output].predict(a.reshape(1,-1)))
-				a[i] = 0
+				
+				for j in range(2):
+					ret[count*2+1] += (self.nn[output].predict(a.reshape(1, -1)))/2
+				
+				a = np.array(self.max)
+				for j in I:
+					a[j] = 0
+				a[i] = 1
+				
+				for j in range(2):
+					ret[count*2+1] += (self.nn[output].predict(a.reshape(1, -1)))/2
+
+				count += 1
 
 			return ret
 
 		elif (self.x_labels[feature].split(":")[0] == "C"):
-			a = self.mean
-			k = 0
+			ret = ["",0,"",0,"",0,"",0,"",0]
+			idx, min_val, max_val = -1,-1,-1
+
 			for i in range(len(self.X_labels)):
 				if self.x_labels[feature] in self.X_labels[i]:
-				    k = i
-			ret = []
-			cts_range = [-1.6, -0.8, 0, 0.8, 1.6]
+					idx = i
+					min_val = self.min[idx]
+					max_val = self.max[idx]
+
+			mid = (min_val+max_val)/2
+			cts_range = [min_val, (min_val+mid)/2, mid, (max_val+mid)/2, max_val]
+
+			count = 0
 			for i in cts_range:
-				a[k] = i
-				score = 0
+				ret[count*2] = self.x_labels[feature] + " = " + str(i)
+
+				a = np.array(self.min)
+				a[idx] = i
+
 				for j in range(2):
-					score += (self.nn[output].predict(a.reshape(1,-1)))/2
-				ret.append(self.x_labels[feature] + " = " + str(i))
-				ret.append(score)
+					ret[count*2+1] += (self.nn[output].predict(a.reshape(1,-1)))/2
+
+				a = np.array(self.max)
+				a[idx] = i
+
+				for j in range(2):
+					ret[count*2+1] += (self.nn[output].predict(a.reshape(1,-1)))/2
+
+				count += 1
+
 			return ret
+
+# 	""" Helper Function """
+# 	# Program to find most frequent element in a list
+# 	def most_frequent(List):
+# 		return max(set(List), key = List.count)
+#
+# 	""" Helper Function """
+# 	# Program to find most frequent element in a list
+# 	def least_frequent(List):
+# 		return min(set(List), key = List.count)
+#
+# test = NN(None, "SURFACE_RESPONSE_RUNS.csv")
+# test.fit()
+# print(test.min)
+# for i in range(len(test.x_labels)):
+# 	for j in range(len(test.y_labels)):
+# 		print(test.score(i,j))
+# 		print("")

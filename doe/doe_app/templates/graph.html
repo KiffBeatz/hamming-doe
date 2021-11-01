@@ -11,7 +11,23 @@
             width: fit-content;
             background-color: white;
             border-radius: 25px;
+            padding: 5px;
+            margin: auto;
+        }
+
+        .block_box {
+            width: fit-content;
+            background-color: #dddddd;
+            border-radius: 25px;
             padding: 10px;
+            margin: auto;
+        }
+
+        .form_box {
+            width: fit-content;
+            background-color: #dddddd;
+            border-radius: 25px;
+            padding: 5px;
             margin: auto;
         }
 
@@ -30,267 +46,313 @@
     <div class="heading" style="margin-top: 15px">
         <h1 style="font-size: xxx-large;">Graph Visualization</h1>
     </div>
-    <div class="heading" style="margin-top: 20px; margin-bottom: 10px">
-        <h2 style="font-size: medium; font-weight: bold;">Output of trained neural network</h2>
-    </div>
 
+    <div class="block_box" style="margin-top: 20px;">
+        <div class="heading" style="margin-top: 10px; margin-bottom: 10px">
+            <h2 style="font-size: medium; font-weight: bold;">Output of trained neural network</h2>
+        </div>
 
-    {# GRAPH SECTION #}
-    <div class="section_box">
-        <div>
-            <h3 id="chart_heading" style="
+        {# GRAPH SECTION #}
+        <div class="section_box">
+            <div>
+                <h3 id="chart_heading" style="
                 font-size: large;
                 text-align: center;
                 color: #00557A
-            ">
+            "></h3>
+            </div>
 
-            </h3>
-        </div>
+            <div class="graph" style="margin: auto">
+                <canvas id="chart" width="1000px" height="350px"></canvas>
+                <script>
+                    let ctx = document.getElementById("chart").getContext("2d");
 
-        <div class="graph">
-            <canvas id="chart" width="1000px" height="400px"></canvas>
-            <script>
-                let ctx = document.getElementById("chart").getContext("2d");
+                    let gradientStroke = ctx.createLinearGradient(0, 500, 0, 0);
+                    gradientStroke.addColorStop(1, 'green');
+                    gradientStroke.addColorStop(0, '#f49080');
 
-                let gradientStroke = ctx.createLinearGradient(0, 500, 0, 0);
-                gradientStroke.addColorStop(1, 'green');
-                gradientStroke.addColorStop(0, '#f49080');
+                    let myChart = new Chart(ctx, {type: 'bar'});
+                    myChart = new Chart(ctx, getConfig());
 
-                let myChart = new Chart(ctx, {type: 'bar'});
-                myChart = new Chart(ctx, getConfig());
 
-                function getConfig() {
-                    let scores = {{ scores | safe }};
-                    let x = "";
-                    let y = "";
+                    function getConfig() {
+                        let scores = {{ scores | safe }};
+                        let x = "";
+                        let y = "";
 
-                    if (document.getElementById("feature_output_form") != null) {
-                        x = document.getElementById("x_list").value;
-                        y = document.getElementById("y_list").value;
-                    } else {
-                        let key = Object.keys(scores[0])[0];
-                        x = key.split("&")[0]
-                        y = key.split("&")[1]
+                        if (document.getElementById("feature_output_form") != null) {
+                            x = document.getElementById("x_list").value;
+                            y = document.getElementById("y_list").value;
+                        } else {
+                            let key = Object.keys(scores[0])[0];
+                            x = key.split("&")[0]
+                            y = key.split("&")[1]
+                        }
+
+                        document.getElementById("chart_heading").innerHTML = "Testing: " + y.split(":")[1];
+
+                        let checkBox = document.getElementById("myCheck");
+                        let color;
+
+                        if (checkBox != null) {
+                            if (checkBox.checked === true) {
+                                gradientStroke = ctx.createLinearGradient(0, 500, 0, 0);
+                                gradientStroke.addColorStop(1, 'green');
+                                gradientStroke.addColorStop(0, '#f49080');
+                                color = gradientStroke;
+                            } else {
+                                color = "#80b6f4";
+                            }
+                        } else {
+                            color = "#80b6f4";
+                        }
+
+                        let type = getType(x)
+                        let labels = getLabels(x, y);
+                        let values = getValues(x, y);
+                        let config = {};
+
+                        console.log(scores)
+                        console.log(values)
+
+                        if (type === 1) {
+                            config = {
+                                type: 'bar',
+                                data: {
+                                    labels: labels,
+                                    datasets: [{
+                                        borderColor: color,
+                                        pointBorderColor: color,
+                                        pointBackgroundColor: color,
+                                        pointHoverBackgroundColor: color,
+                                        pointHoverBorderColor: color,
+                                        fill: false,
+                                        borderWidth: 4,
+                                        data: values,
+                                    }]
+                                },
+                                options: {
+                                    legend: {
+                                        display: false
+                                    },
+                                    responsive: false,
+                                    scales: {
+                                        xAxes: [{
+                                            ticks: {
+                                                padding: 5,
+                                                fontSize: 18
+                                            }
+                                        }],
+                                        yAxes: [{
+                                            ticks: {
+                                                padding: 5,
+                                                fontSize: 18
+                                            }
+                                        }]
+                                    }
+                                }
+                            }
+                        }
+                        if (type === 0) {
+                            config = {
+                                type: "line",
+                                data: {
+                                    labels: labels,
+                                    datasets: [{
+                                        borderColor: color,
+                                        pointBorderColor: color,
+                                        pointBackgroundColor: color,
+                                        pointHoverBackgroundColor: color,
+                                        pointHoverBorderColor: color,
+                                        pointBorderWidth: 10,
+                                        pointHoverRadius: 10,
+                                        pointHoverBorderWidth: 1,
+                                        pointRadius: 3,
+                                        fill: false,
+                                        borderWidth: 4,
+                                        data: values,
+                                    }]
+                                },
+                                options: {
+                                    legend: {
+                                        display: false
+                                    },
+                                    responsive: false,
+                                    scales: {
+                                        xAxes: [{
+                                            gridLines: {
+                                                drawTicks: false,
+                                                display: false
+                                            },
+                                            ticks: {
+                                                padding: 10,
+                                                fontSize: 18
+                                            }
+                                        }],
+                                        yAxes: [{
+                                            ticks: {
+                                                padding: 10,
+                                                fontSize: 18
+                                            }
+                                        }]
+                                    }
+                                }
+                            }
+                        }
+
+                        return config;
                     }
 
-                    document.getElementById("chart_heading").innerHTML = "Testing: " + y.split(":")[1];
+                    function getValues(x, y) {
+                        let scores = {{ scores | safe }};
+                        let arr
 
-                    let checkBox = document.getElementById("myCheck");
-                    let color;
+                        Object.keys(scores).forEach(k => {
+                            let dict = scores[k];
+                            Object.keys(dict).forEach(key => {
+                                let temp = key.split("&");
+                                if (temp[0] === x && temp[1] === y) {
+                                    arr = dict[key][0];
+                                }
+                            });
+                        });
 
-                    if (checkBox != null) {
+                        return arr;
+                    }
+
+                    function getLabels(x, y) {
+                        let scores = {{ scores | safe }};
+                        let arr;
+
+                        Object.keys(scores).forEach(k => {
+                            let dict = scores[k];
+                            Object.keys(dict).forEach(key => {
+                                let temp = key.split("&");
+                                if (temp[0] === x && temp[1] === y) {
+                                    arr = dict[key][1];
+                                }
+                            });
+                        });
+
+                        return arr;
+                    }
+
+                    function getType(x) {
+                        if (x[0] === "C") {
+                            return 0;
+                        }
+                        if (x[0] === "D") {
+                            return 1;
+                        }
+                        return -1;
+                    }
+
+                    function setConfig() {
+                        myChart.config = getConfig();
+                        myChart.update();
+                    }
+
+                    function setGradient() {
+                        let checkBox = document.getElementById("myCheck");
+                        let x = myChart.config.data.datasets[0];
+
                         if (checkBox.checked === true) {
                             gradientStroke = ctx.createLinearGradient(0, 500, 0, 0);
                             gradientStroke.addColorStop(1, 'green');
                             gradientStroke.addColorStop(0, '#f49080');
-                            color = gradientStroke;
+                            x.borderColor = gradientStroke;
+                            x.pointBorderColor = gradientStroke;
+                            x.pointBackgroundColor = gradientStroke;
+                            x.pointHoverBackgroundColor = gradientStroke;
+                            x.pointHoverBorderColor = gradientStroke;
                         } else {
-                            color = "#80b6f4";
+                            x.borderColor = "#80b6f4";
+                            x.pointBorderColor = "#80b6f4";
+                            x.pointBackgroundColor = "#80b6f4";
+                            x.pointHoverBackgroundColor = "#80b6f4";
+                            x.pointHoverBorderColor = "#80b6f4";
                         }
-                    } else {
-                        color = "#80b6f4";
+
+                        myChart.update();
                     }
 
-                    let type = getType(x)
-                    let labels = getLabels(x, y);
-                    let values = getValues(x, y);
-                    let config = {};
+                </script>
+            </div>
 
-                    if (type === 1) {
-                        config = {
-                            type: 'bar',
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                    borderColor: color,
-                                    pointBorderColor: color,
-                                    pointBackgroundColor: color,
-                                    pointHoverBackgroundColor: color,
-                                    pointHoverBorderColor: color,
-                                    fill: false,
-                                    borderWidth: 4,
-                                    data: values,
-                                }]
-                            },
-                            options: {
-                                legend: {
-                                    display: false
-                                },
-                                responsive: false,
-                                scales: {
-                                    xAxes: [{
-                                        ticks: {
-                                            padding: 5,
-                                            fontSize: 18
-                                        }
-                                    }],
-                                    yAxes: [{
-                                        ticks: {
-                                            padding: 5,
-                                            fontSize: 18
-                                        }
-                                    }]
-                                }
-                            }
-                        }
-                    }
-                    if (type === 0) {
-                        config = {
-                            type: "line",
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                    borderColor: color,
-                                    pointBorderColor: color,
-                                    pointBackgroundColor: color,
-                                    pointHoverBackgroundColor: color,
-                                    pointHoverBorderColor: color,
-                                    pointBorderWidth: 10,
-                                    pointHoverRadius: 10,
-                                    pointHoverBorderWidth: 1,
-                                    pointRadius: 3,
-                                    fill: false,
-                                    borderWidth: 4,
-                                    data: values,
-                                }]
-                            },
-                            options: {
-                                legend: {
-                                    display: false
-                                },
-                                responsive: false,
-                                scales: {
-                                    xAxes: [{
-                                        gridLines: {
-                                            drawTicks: false,
-                                            display: false
-                                        },
-                                        ticks: {
-                                            padding: 5,
-                                            fontSize: 18
-                                        }
-                                    }],
-                                    yAxes: [{
-                                        ticks: {
-                                            padding: 5,
-                                            fontSize: 18
-                                        }
-                                    }]
-                                }
-                            }
-                        }
-                    }
+            <div class="gradientSelect" style="margin-top: 10px; text-align: center">
+                <label>
+                    Show Gradient: <input type="checkbox" id="myCheck" onclick="setGradient()">
+                </label>
+            </div>
 
-                    return config;
-                }
+            <div class="section_box" style="margin-top: 15px">
+                <form id="feature_output_form">
+                    {% csrf_token %}
 
-                function getValues(x, y) {
-                    let scores = {{ scores | safe }};
-                    let arr
+                    <label>Input Feature</label>
+                    <select id="x_list" name="feature" onchange="setConfig()"></select>
 
-                    Object.keys(scores).forEach(k => {
-                        let dict = scores[k];
-                        Object.keys(dict).forEach(key => {
-                            let temp = key.split("&");
-                            if (temp[0] === x && temp[1] === y) {
-                                arr = dict[key][0];
-                            }
-                        });
-                    });
+                    <label>Output</label>
+                    <select id="y_list" name="output" onchange="setConfig()"></select>
 
-                    return arr;
-                }
-
-                function getLabels(x, y) {
-                    let scores = {{ scores | safe }};
-                    let arr;
-
-                    Object.keys(scores).forEach(k => {
-                        let dict = scores[k];
-                        Object.keys(dict).forEach(key => {
-                            let temp = key.split("&");
-                            if (temp[0] === x && temp[1] === y) {
-                                arr = dict[key][1];
-                            }
-                        });
-                    });
-
-                    return arr;
-                }
-
-                function getType(x) {
-                    if (x[0] === "C") {
-                        return 0;
-                    }
-                    if (x[0] === "D") {
-                        return 1;
-                    }
-                    return -1;
-                }
-
-                function setConfig() {
-                    myChart.config = getConfig();
-                    myChart.update();
-                }
-
-                function setGradient() {
-                    let checkBox = document.getElementById("myCheck");
-                    let x = myChart.config.data.datasets[0];
-
-                    if (checkBox.checked === true) {
-                        gradientStroke = ctx.createLinearGradient(0, 500, 0, 0);
-                        gradientStroke.addColorStop(1, 'green');
-                        gradientStroke.addColorStop(0, '#f49080');
-                        x.borderColor = gradientStroke;
-                        x.pointBorderColor = gradientStroke;
-                        x.pointBackgroundColor = gradientStroke;
-                        x.pointHoverBackgroundColor = gradientStroke;
-                        x.pointHoverBorderColor = gradientStroke;
-                    } else {
-                        x.borderColor = "#80b6f4";
-                        x.pointBorderColor = "#80b6f4";
-                        x.pointBackgroundColor = "#80b6f4";
-                        x.pointHoverBackgroundColor = "#80b6f4";
-                        x.pointHoverBorderColor = "#80b6f4";
-                    }
-
-                    myChart.update();
-                }
-            </script>
-        </div>
-
-        <div class="gradientSelect" style="margin-top: 10px; text-align: center">
-            <label>
-                Show Gradient: <input type="checkbox" id="myCheck" onclick="setGradient()">
-            </label>
-        </div>
-
-        <div class="section_box" style="margin-top: 15px">
-            <form id="feature_output_form">
-                {% csrf_token %}
-
-                <label>Input Feature</label>
-                <select id="x_list" name="feature" onchange="setConfig()"></select>
-
-                <label>Output</label>
-                <select id="y_list" name="output" onchange="setConfig()"></select>
-
-                <script>
-                    let str = ''
-                    let X = {{ xlabels | safe}}
+                    <script>
+                        let str = '';
+                        let X = {{ xlabels | safe}};
                         X.forEach(function (x) {
                             str += '<option>' + x + '</option>';
                         });
-                    document.getElementById("x_list").innerHTML = str;
+                        document.getElementById("x_list").innerHTML = str;
 
-                    str = ''
-                    let Y = {{ ylabels | safe}}
+                        str = '';
+                        let Y = {{ ylabels | safe}};
                         Y.forEach(function (y) {
                             str += '<option>' + y + '</option>';
                         });
-                    document.getElementById("y_list").innerHTML = str;
-                </script>
-            </form>
+                        document.getElementById("y_list").innerHTML = str;
+                    </script>
+                </form>
+            </div>
         </div>
     </div>
+
+{##}
+{#    <div class="form_box" style="margin-top: 20px;">#}
+{#        <div class="heading" style="margin-top: 10px; margin-bottom: 10px">#}
+{#            <h2 style="font-size: medium; font-weight: bold;">Re-test NN with restricted features</h2>#}
+{#        </div>#}
+{##}
+{#        <div class="section_box">#}
+{#            <form id="feature_output_form">#}
+{#                {% csrf_token %}#}
+{##}
+{#                <h3 id="form_heading" style="#}
+{#                    font-size: large;#}
+{#                    text-align: center;#}
+{#                    color: #00557A#}
+{#                ">{{ dataset | safe }}</h3>#}
+{##}
+{#                <div class="section_box" id="feature_div">#}
+{##}
+{#                </div>#}
+{##}
+{#                <script>#}
+{#                    let str = ''#}
+{#                    let X = {{ x_labels | safe}};#}
+{#                    let Y = {{ y_labels | safe}};#}
+{#                    let x_min = {{ x_min | safe }};#}
+{#                    let x_max = {{ x_max | safe }};#}
+{##}
+{##}
+{##}
+{#                    X.forEach(function (x) {#}
+{#                        let id = x + "_select";#}
+{#                        str += '<select name=id">';#}
+{#                    });#}
+{##}
+{#                    document.getElementById("feature_div").innerHTML = str;#}
+{#                </script>#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+
 {% endblock %}

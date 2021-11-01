@@ -33,7 +33,8 @@ def graph(request):
                 for s in score:
                     if isinstance(s, str):
                         if s[0] == "C":
-                            labels.append(s.split("=")[1][1:])
+                            lab = s.split("=")[1][1:]
+                            labels.append(round(float(lab), 2))
                         elif s[0] == "D":
                             labels.append(s.split(":")[1])
                     else:
@@ -45,6 +46,9 @@ def graph(request):
             'scores' : scores,
             'xlabels': nn.x_labels,
             'ylabels': nn.y_labels,
+            'dataset': graph_title,
+            'x_min': nn.min,
+            'x_max': nn.max,
         }
 
         return render(request, "graph.html", context)
