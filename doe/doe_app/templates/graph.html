@@ -48,6 +48,7 @@
         </div>
 
         <div>
+            <h4>Add data to Graph</h4>
             <form action="/graph/" method="post">
                 {% csrf_token %}
                 <div>
@@ -64,8 +65,20 @@
                         <input type="text" name="output_data_{{ forloop.counter }}" value="" size="10px"> 
                     </div>
                     {% endfor %}
+                    <input type="checkbox" name="add_data"> Add data to database and .csv file
                     <button type="submit" name="dataset_choice" value="{{ chosen_name }}">Add Data Value</button>
                 </div>
+            </form>
+            <h4>Select the range from the database to feed into the neural network</h4>
+            <form action="/graph/" method="post">
+                {% csrf_token %}
+                <div>
+                    Min:
+                    <input type="number" name="chosen_range_min" min="1">
+                    Max:
+                    <input type="number" name="chosen_range_max" min="1">
+                </div>
+                <button type="submit" name="dataset_choice" value="{{ chosen_name }}">Select data range</button>
             </form>
         </div>
 
