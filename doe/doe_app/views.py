@@ -226,11 +226,13 @@ def getDatasetList(dataset_name, new_data, add_data, data_range):
         if len(new_data.split(",")) == len(dataset_headers):
             if not ("" in new_data.split(",")):
                 final_list.append(new_data.split(","))
-                print(new_data)
-                new =  current_dataset["data"] + new_data + "\r\n"
+                if current_dataset["data"][-1] != "\n":
+                    current_dataset["data"] = current_dataset["data"] + "\r\n"
+
+                new = current_dataset["data"] + new_data + "\r\n"
                 if add_data == 'on':
                     with open('doe_app/neural_data/{file_name}.csv'.format(file_name=dataset_name), 'a') as file:
-                        file.write( new_data + '\r\n')
+                        file.write(new_data + '\r\n')
                     Dataset.objects.filter(pk=dataset_name).update(name=dataset_name, headers=current_dataset["headers"], types=current_dataset["types"], data = new)            
         return final_list
     
