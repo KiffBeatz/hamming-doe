@@ -65,15 +65,21 @@
             <div class="graph" style="margin: auto">
                 <canvas id="chart" width="1000px" height="350px"></canvas>
                 <script>
-                    let ctx = document.getElementById("chart").getContext("2d");
+                    let str = '';
+                    let X = {{ xlabels | safe }};
+                    let Y = {{ ylabels | safe }};
 
+                    let XX = {{ X_labels | safe }};
+                    let x_min = {{ x_min | safe }};
+                    let x_max = {{ x_max | safe }};
+
+                    let ctx = document.getElementById("chart").getContext("2d");
                     let gradientStroke = ctx.createLinearGradient(0, 500, 0, 0);
                     gradientStroke.addColorStop(1, 'green');
                     gradientStroke.addColorStop(0, '#f49080');
 
                     let myChart = new Chart(ctx, {type: 'bar'});
                     myChart = new Chart(ctx, getConfig());
-
 
                     function getConfig() {
                         let scores = {{ scores | safe }};
@@ -111,9 +117,6 @@
                         let labels = getLabels(x, y);
                         let values = getValues(x, y);
                         let config = {};
-
-                        console.log(scores)
-                        console.log(values)
 
                         if (type === 1) {
                             config = {
@@ -296,15 +299,13 @@
                     <select id="y_list" name="output" onchange="setConfig()"></select>
 
                     <script>
-                        let str = '';
-                        let X = {{ xlabels | safe}};
+                        str = '';
                         X.forEach(function (x) {
                             str += '<option>' + x + '</option>';
                         });
                         document.getElementById("x_list").innerHTML = str;
 
                         str = '';
-                        let Y = {{ ylabels | safe}};
                         Y.forEach(function (y) {
                             str += '<option>' + y + '</option>';
                         });
@@ -315,44 +316,102 @@
         </div>
     </div>
 
-{##}
-{#    <div class="form_box" style="margin-top: 20px;">#}
-{#        <div class="heading" style="margin-top: 10px; margin-bottom: 10px">#}
-{#            <h2 style="font-size: medium; font-weight: bold;">Re-test NN with restricted features</h2>#}
-{#        </div>#}
-{##}
-{#        <div class="section_box">#}
-{#            <form id="feature_output_form">#}
-{#                {% csrf_token %}#}
-{##}
-{#                <h3 id="form_heading" style="#}
-{#                    font-size: large;#}
-{#                    text-align: center;#}
-{#                    color: #00557A#}
-{#                ">{{ dataset | safe }}</h3>#}
-{##}
-{#                <div class="section_box" id="feature_div">#}
-{##}
-{#                </div>#}
-{##}
-{#                <script>#}
-{#                    let str = ''#}
-{#                    let X = {{ x_labels | safe}};#}
-{#                    let Y = {{ y_labels | safe}};#}
-{#                    let x_min = {{ x_min | safe }};#}
-{#                    let x_max = {{ x_max | safe }};#}
-{##}
-{##}
-{##}
-{#                    X.forEach(function (x) {#}
-{#                        let id = x + "_select";#}
-{#                        str += '<select name=id">';#}
-{#                    });#}
-{##}
-{#                    document.getElementById("feature_div").innerHTML = str;#}
-{#                </script>#}
-{#            </form>#}
-{#        </div>#}
-{#    </div>#}
+    <div class="form_box" style="margin-top: 20px; ">
+
+        <div class="heading" style="margin-top: 10px; margin-bottom: 10px">
+            <h2 style="font-size: medium; font-weight: bold;">Test application with restrictions on features</h2>
+        </div>
+
+        <div class="section_box" style="width: 90%">
+            <form id="test_form" action="/results/" method="post">
+                {% csrf_token %}
+
+                <h3 id="form_heading" name="dataset_choice" style="
+                    font-size: large;
+                    text-align: center;
+                    color: #00557A
+                ">{{ dataset | safe }}</h3>
+
+                <div class="section_box" id="test_div"></div>
+                <script>
+                    let name = '';
+                    let count = 0;
+                    let name_count = 0;
+
+                    str = '';
+
+                    X.forEach(function (x) {
+                        str += '<div style="margin: auto">'
+                        if (x[0] === "D") {
+                            str += '<a>' + x + " " + '</a>';
+                            name = 'x_' + name_count;
+                            str += '<select name=' + name + '>';
+                            name_count++;
+                            str += '<option>Any</option>';
+                            XX.forEach(function (i) {
+                                if (i.includes(x)) {
+                                    str += '<option>';
+                                    str += i.split("= ")[1];
+                                    str += '</option>';
+                                    count++;
+                                }
+                            });
+                            str += '</select>';
+                        }
+                        if (x[0] === "C") {
+                            str += '<a>' + x + " " + '</a>';
+                            name = 'cx_' + name_count;
+                            str += '<input name=' + name + ' type="number" value=' + Number((x_min[count]).toFixed(3)) + '>';
+                            name_count++;
+                            name = 'cx_' + name_count;
+                            str += '<input name=' + name + ' type="number" value=' + Number((x_max[count]).toFixed(3)) + '>';
+                            name_count++;
+                            count++;
+                        }
+                        str += '</div>';
+                    });
+
+                    str += '<div style="text-align: center; margin-top: 15px">';
+                    str += '<a> Output: </a>';
+                    str += '<select >';
+                    Y.forEach(function (y) {
+                        str += '<option>' + y + '</option>';
+                    });
+                    str += '</select>';
+                    str += '</div>';
+                    str += '<div style="text-align: center; margin-bottom: 10px">';
+                    str += '<button type="submit" name="dataset_choice" ' + 'value=' + '"' + '{{ dataset }}' + '"' + '>' + "TEST" + '</button>';
+
+                    document.getElementById("test_div").innerHTML = str;
+
+                </script>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="section_box">
+        <h4>Add data to Graph</h4>
+        <form action="/graph/" method="post">
+            {% csrf_token %}
+            <div>
+                {% for value in xlabels %}
+                    <div>
+                        {{ value }}
+                        <input type="text" name="input_data_{{ forloop.counter }}" value="" size="10px">
+                    </div>
+                {% endfor %}
+
+                {% for value in ylabels %}
+                    <div>
+                        {{ value }}
+                        <input type="text" name="output_data_{{ forloop.counter }}" value="" size="10px">
+                    </div>
+                {% endfor %}
+                <input type="checkbox" name="add_data"> Add data to database and .csv file
+                <button type="submit" name="dataset_choice" value="{{ chosen_name }}">Add Data Value</button>
+            </div>
+        </form>
+    </div>
 
 {% endblock %}
