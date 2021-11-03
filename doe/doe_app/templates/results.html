@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        .section_box {
+            width: fit-content;
+            background-color: white;
+            border-radius: 25px;
+            padding: 5px;
+            margin: auto;
+        }
+
+        {#.block_box {#}
+        {#    width: fit-content;#}
+        {#    background-color: #dddddd;#}
+        {#    border-radius: 25px;#}
+        {#    padding: 10px;#}
+        {#    margin: auto;#}
+        {#}#}
+
+        .heading {
+            width: fit-content;
+            color: #eeeeee;
+            background-color: #00557A;
+            border-radius: 25px;
+            padding: 10px;
+            margin: auto;
+        }
+    </style>
+
+    <script>
+        let names = {{ names }};
+        console.log(names);
+    </script>
+
+
+    {# HEADINGS #}
+    <div class="heading" style="margin-top: 15px">
+        <h1 style="font-size: xxx-large;">Test Results</h1>
+    </div>
+
+    {# TABLE SECTION #}
+    <div class="section_box">
+        <div>
+            <h3 id="table_heading" style="
+                font-size: large;
+                text-align: center;
+                color: #00557A
+            ">Table of test runs: </h3>
+        </div>
+    </div>
+
+{% endblock %}
