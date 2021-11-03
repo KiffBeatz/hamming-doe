@@ -14,20 +14,12 @@ def graph(request):
         return view(request)
 
     if request.method == 'POST':
+    # -----------------------NOTE CUT HERE---------------------------------------------------------
         chosen_name = request.POST['dataset_choice']
-        chosen_range_min = request.POST.get("chosen_range_min", -1)
-        chosen_range_max = request.POST.get("chosen_range_max", -1)
         add_data = request.POST.get("add_data", "off")
         final_data = ""
         new_data = ""
-        if chosen_range_max == '' or chosen_range_min == '':
-            chosen_range_min = -1
-            chosen_range_max = -1
-        if int(chosen_range_max) < int(chosen_range_min):
-            chosen_range_min = -1
-            chosen_range_max = -1
 
-        final_range = [chosen_range_min, chosen_range_max]
         i = 1
         while new_data != "input_end":
             new_data = request.POST.get("input_data_" + str(i), "input_end")
@@ -43,11 +35,9 @@ def graph(request):
             i = i + 1
 
         final_data = final_data[:-1]
-        #TODO Fix glitch where new_data is uploaded again on refresh
-
-        dataset_list = getDatasetList(chosen_name, final_data, add_data, final_range)
+        dataset_list = getDatasetList(chosen_name, final_data, add_data)
+    # -----------------------NOTE TO HERE--------------------------------------------------------------------
         dataset_object = Dataset.objects.filter(name=chosen_name)
-        
         graph_title = dataset_object[0].name
 
         # Load data from DB & Train
@@ -72,14 +62,14 @@ def graph(request):
                         values.append(s[0])
                 data = [values, labels]
                 scores.append({nn.x_labels[i] + "&" + nn.y_labels[j]:data})
-
+# -----------------------NOTE CUT HERE---------------------------------------------------------
         context = {
             'chosen_name' : chosen_name,
             'scores' : scores,
             'xlabels': nn.x_labels,
             'ylabels': nn.y_labels,
         }
-
+# -----------------------NOTE TO HERE--------------------------------------------------------------------
         return render(request, "graph.html", context)
 #
 # def graph(request):
@@ -199,8 +189,9 @@ def view(request):
     return render(request, "view.html", context)
 
 
+# -----------------------NOTE CUT HERE--------------------------------------------
 # Reads data from the database and formats it into a list that the neural network accepts
-def getDatasetList(dataset_name, new_data, add_data, data_range):
+def getDatasetList(dataset_name, new_data, add_data):
     check = Dataset.objects.filter(pk=dataset_name).exists()
     if check:
         current_dataset = Dataset.objects.filter(pk=dataset_name).values()[0]
@@ -213,15 +204,9 @@ def getDatasetList(dataset_name, new_data, add_data, data_range):
         final_list.append(dataset_types)
 
         dataset_data = current_dataset["data"].split("\n")
-        range = 1
         for a in dataset_data:
             if(a.split(",") != [""]):
-                if int(data_range[0]) != -1:
-                    if range >= int(data_range[0]) and range <= int(data_range[1]):
-                        final_list.append(a.split(","))
-                else:
-                    final_list.append(a.split(","))
-                range = range + 1
+                final_list.append(a.split(","))
 
         if len(new_data.split(",")) == len(dataset_headers):
             if not ("" in new_data.split(",")):
@@ -237,6 +222,7 @@ def getDatasetList(dataset_name, new_data, add_data, data_range):
         return final_list
     
     return None
+# -----------------------NOTE TO HERE--------------------------------------------
 
 def getIndex(labels, label):
     for i in range(len(labels)):
