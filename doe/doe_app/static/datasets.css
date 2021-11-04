@@ -1,4 +1,4 @@
-table {
+.table1 {
     border-collapse: collapse;
     border-radius: 5px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
@@ -6,9 +6,10 @@ table {
     font-family: "Quicksand", sans-serif;
     font-weight: bold;
     font-size: 14px;
+		max-width: 90%;
     margin-top: 10px;
     margin-left: auto;
-	margin-right: auto;
+  	margin-right: auto;
 }
 
 .ViewFiles{
@@ -38,36 +39,75 @@ table {
   transform: translateY(4px);
 }
 
+.Preview{
+  position:relative;
+  display: grid;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top:10px;
+	margin-bottom:10px;
+  width: 30%;
+  padding: 15px 25px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #00557A;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.Preview:hover {background-color: darkblue}
+
+.Preview:active {
+  background-color: darkblue;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.Refresh{
+  position:relative;
+  display: grid;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top:10px;
+	margin-bottom: 20px;
+  width: 30%;
+  padding: 15px 25px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #00557A;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.Refresh:hover {background-color: darkblue}
+
+.Refresh:active {
+  background-color: darkblue;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
 
 .l1 {
 		display: block;
     text-align: center;
+		font-weight: bold;
+		font-size: 24px;
 		margin-top:10px;
 		margin-bottom: 1px;
 }
 
-.csvViewForm {
-		position:relative;
-		display: grid;
-		margin-left: auto;
-    margin-right: auto;
-    margin-top: 1px;
-		width: 30%;
-		padding: 15px 25px;
-    font-size: 24px;
-    text-align: center;
-    cursor: pointer;
-    outline: none;
-    color: #fff;
-    background-color: #00557A;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
 th {
-    background-image: url('background2.png');
-    color: black;
+    background: #9BCCFF;
+    color: white;
     text-align: left;
 }
 
@@ -77,11 +117,11 @@ td {
 }
 
 tr:nth-child(odd) {
-  background-image: url('background2.png');
+  background: #eeeeee;
 }
 
 tr:nth-child(even) {
-    background: #eeeeee;
+    background: #9BCCFF;
 }
 
 

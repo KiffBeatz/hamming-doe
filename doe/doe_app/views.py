@@ -163,6 +163,15 @@ def datasets(request):
       data5 = np.arange(10)
       data7 = np.arange(width)
 
+      count = 0
+      for change in data4:
+        if change == "C":
+          data4[count] = "Continuous"
+        elif change == "D":
+          data4[count] = "Discrete"
+        else:
+          data4[count] = "Output"
+        count = count + 1
 
       context1 = {
         'data1': data1,
