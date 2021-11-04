@@ -37,24 +37,52 @@
             <li>All the following rows contains the data</li>
         </ul>
     </div>
+</form>
+<button class="ViewFiles" onclick="clickViewFiles()">View uploaded files</button>
+<button class="Preview" onclick="clickPreview()">Show/Hide Preview</button>
+<div id="dtable">
+<label class="l1" for="table" style="color:rgba(0, 0, 0,1);">{{data2}}</label>
+{% if data1 %}
+  <table class='table1' id="table">
+    <thead>
+      <tr>
+        {% for info1 in data3 %}
+          <th>{{info1}}</th>
+			{% endfor %}
+      </tr>
+    </thead>
+      <tr>
+        {% for info2 in data4 %}
+          <td>{{info2}}</td>
+        {% endfor %}
+      </tr>
+      {% for info3 in data6 %}
+        <tr>
+        {% for info4 in info3 %}
+          <td>{{info4}}</td>
+        {% endfor %}
+        </tr>
+      {% endfor %}
+  </table>
+{% endif %}
+</div>
+<button class="Refresh" onclick="clickRefresh()">Refresh</button>
+<script>
+    function clickViewFiles() {
+        location.href = "http://127.0.0.1:8000/datasets/view"
+    }
 
-    <form action="/datasets/" class="dropzone dz" id="my-dropzone">
-        {% csrf_token %}
-        <div class="fallback">
-            <input name="file" type="file" multiple/>
-        </div>
-    </form>
-    <button class="ViewFiles" onclick="clickViewFiles()">View uploaded files</button>
-    <label class="l1" for="csvFileInput" style="color:rgba(0, 0, 0,1);">Preview my CSV file:</label>
-    <form class="csvViewForm">
-        <input type="file" class="csvViewInput" id="csvFileInput" style="padding-bottom: 15px">
-    </form>
-    <form class="">
-        <table id="csvRoot"></table>
-    </form>
-    <script>
-        function clickViewFiles() {
-            location.href = "http://127.0.0.1:8000/datasets/view"
-        }
-    </script>
+    function clickPreview() {
+      var x = document.getElementById("dtable");
+      if (x.style.display === "none") {
+        x.style.display = "grid";
+      } else {
+        x.style.display = "none";
+      }
+		}
+
+    function clickRefresh() {
+			location.reload();
+		}
+</script>
 {% endblock %}
