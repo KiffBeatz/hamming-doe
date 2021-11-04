@@ -180,11 +180,12 @@ def results(request):
             score.append(y_score[0])
             scores.append(score)
 
-        scores_labels = [nn.X_labels, request.POST.get('output')]
+        scores_labels = nn.X_labels
+        scores_labels.append(request.POST.get('output'))
         
         context = {
-            'scores' : scores,
             'scores_labels' : scores_labels,
+            'scores' : scores,
             'xlabels': nn.x_labels,
             'ylabels': nn.y_labels,
             'dataset': chosen_name,
