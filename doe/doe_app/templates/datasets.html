@@ -3,45 +3,39 @@
 {% block title %}Upload Datasets{% endblock %}
 
 {% block content %}
-<script>
-    Dropzone.options.myDropzone = {
-        acceptedFiles: ".csv",
-        dictDuplicateFile: "Duplicate Files Cannot Be Uploaded",
-        preventDuplicates: true,
-    };
-</script>
-<style>
-    .formatbox {
-	background-color: white;
-	border:3px solid white;
-	border-radius: 25px 25px 25px 25px;
-	width: 50%;
-	padding: 10px;
-	margin-left: 25%;
-	margin-top: 2.5%;
-}
-</style>
+    <script>
+        Dropzone.options.myDropzone = {
+            acceptedFiles: ".csv",
+            dictDuplicateFile: "Duplicate Files Cannot Be Uploaded",
+            preventDuplicates: true,
+        };
+    </script>
+    <style>
+        .formatbox {
+            background-color: white;
+            border: 3px solid white;
+            border-radius: 25px 25px 25px 25px;
+            width: 50%;
+            padding: 10px;
+            margin-left: 25%;
+            margin-top: 2.5%;
+        }
+    </style>
 
-<div class="formatbox" style="background-color: #00557A;">
-    <h1 style="color: white; text-align: center;"><u>File Format:</u></h1>
-    <p style="color:white">The dataset file must be formatted as a .csv file.</p>
-    <ul style="color:white">
-        <li>The first row of data must contain the variable names</li>
-        <li>The second row describes the respective variable's type and must contain either:
-            <ul>
-                <li>a 'D' for discrete input data</li>
-                <li>a 'C' for continous input data</li>
-                <li>an 'O' for output data</li>
-            </ul>
-        </li>
-        <li>All the following rows contains the data</li>
-    </ul>
-</div>
-
-<form action="/datasets/" class="dropzone dz" id="my-dropzone">
-    {% csrf_token %}
-    <div class="fallback">
-        <input name="file" type="file" multiple />
+    <div class="formatbox" style="background-color: #00557A;">
+        <h1 style="color: white; text-align: center;"><u>File Format:</u></h1>
+        <p style="color:white">The dataset file must be formatted as a .csv file.</p>
+        <ul style="color:white">
+            <li>The first row of data must contain the variable names</li>
+            <li>The second row describes the respective variable's type and must contain either:
+                <ul>
+                    <li>a 'D' for discrete input data</li>
+                    <li>a 'C' for continous input data</li>
+                    <li>an 'O' for output data</li>
+                </ul>
+            </li>
+            <li>All the following rows contains the data</li>
+        </ul>
     </div>
 </form>
 <button class="ViewFiles" onclick="clickViewFiles()">View uploaded files</button>

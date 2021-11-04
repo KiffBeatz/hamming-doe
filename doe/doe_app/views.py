@@ -4,6 +4,7 @@ from django.contrib.admin.sites import AlreadyRegistered
 from django.shortcuts import render
 from . import neural
 from .models import Dataset
+from itertools import combinations
 import numpy as np
 
 def home(request):
@@ -15,12 +16,31 @@ def graph(request):
 
     if request.method == 'POST':
         chosen_name = request.POST['dataset_choice']
-        dataset_object = Dataset.objects.filter(name=chosen_name)
-        graph_title = dataset_object[0].name
+        add_data = request.POST.get("add_data", "off")
+        final_data = ""
+        new_data = ""
 
-        # Load data from DB & Train
-        dataset_list = getDatasetList(graph_title)
-        nn = neural.NN(dataset_list, 'doe_app/neural_data/{file_name}.csv'.format(file_name=graph_title))
+        i = 1
+        while new_data != "input_end":
+            new_data = request.POST.get("input_data_" + str(i), "input_end")
+            if new_data != "input_end":
+                final_data = final_data + new_data + ","
+            i = i + 1
+
+        i = 1
+        while new_data != "output_end":
+            new_data = request.POST.get("output_data_" + str(i), "output_end")
+            if new_data != "output_end":
+                final_data = final_data + new_data + ","
+            i = i + 1
+
+        print(chosen_name)
+        print(request.POST)
+
+        final_data = final_data[:-1]
+        dataset_list = getDatasetList(chosen_name, final_data, add_data)
+
+        nn = neural.NN(dataset_list, 'doe_app/neural_data/{file_name}.csv'.format(file_name=chosen_name))
         nn.fit()
 
         # Scores of each feature for NN
@@ -46,7 +66,7 @@ def graph(request):
             'scores' : scores,
             'xlabels': nn.x_labels,
             'ylabels': nn.y_labels,
-            'dataset': graph_title,
+            'dataset': chosen_name,
             'X_labels': nn.X_labels,
             'x_min': nn.min,
             'x_max': nn.max,
@@ -64,11 +84,15 @@ def results(request):
         graph_title = dataset_object[0].name
 
         # Load data from DB & Train
-        dataset_list = getDatasetList(graph_title)
+        dataset_list = getDatasetList(graph_title, "", "")
         nn = neural.NN(dataset_list, 'doe_app/neural_data/{file_name}.csv'.format(file_name=graph_title))
         nn.fit()
 
-        N = 1
+
+        #
+        # Save data from html form
+        #
+
         values = []
         count = 0
         name = "x_" + str(count)
@@ -93,50 +117,83 @@ def results(request):
                 X.append([v[0], (v[0] + mid)/2, mid, (mid + v[1])/2, v[1]])
             if isinstance(v, str):
                 X.append("d")
-                if v == "Any":
-                    x = []
-                    idx = values.index(v)
-                    label = nn.x_labels[idx]
-                    for l in nn.X_labels:
-                        if label in l:
-                            x.append(l.split("= ")[1])
-                    X.append(x)
-                else:
-                    X.append([v])
+                X.append(v)
+
+        #
+        # Generate test lists
+        #
+
+        a_count = 0
+        a = [0,1,2,3,4]
+        A = []
+
+        N = 1
         for x in X:
-            N = N * len(x)
+            if isinstance(x, list):
+                N = N * len(x)
+            if x == "c":
+                a_count += 1
 
-        scores = {}
+        uniqueList = [",".join(map(str, comb)) for comb in combinations(a, a_count)]
+        for i in range(len(uniqueList)):
+            sublist = uniqueList[i].split(",")
+            A.append(sublist)
+        a_count = 0
+
+        A = [[0,0], [0,1], [0,2], [0,3], [0,4], [1,0], [1,1], [1,2], [1,3], [1,4],
+             [2,0], [2,1], [2,2], [2,3], [2,4], [3,0], [3,1], [3,2], [3,3], [3,4],
+             [4,0], [4,1], [4,2], [4,3], [4,4]]
+
         tests = []
-        # for i in range(N):
-        #     test = np.zeros(len(nn.X_labels))
-        #     for j in range(len(nn.x_labels)):
-        #         idx = []
-        #         for x in range(len(nn.X_labels)):
-        #             if nn.x_labels[j] in nn.X_labels[x]:
-        #                 idx.append(x)
-        #
-        #         type = nn.x_labels[j].split(":")[0]
-        #         if type == "D":
-        #             if len(X[j]) == 1:
-        #                 for x in idx:
-        #                     test[x] =
-        #             else:
-        #
-        #         if type == "C":
+        for i in range(N):
+            x = np.zeros(len(nn.X_labels))
+            count = 0
+            for j in range(len(nn.x_labels)):
+                if X[2*j] == "c":
+                    if count == 0:
+                        x[count] = X[2*j+1][int(A[i][0])]
+                    else:
+                        x[count] = X[2*j+1][int(A[i][1])]
+                    count += 1
+                if X[2 * j] == "d":
+                    idx = []
+                    for k in range(len(nn.X_labels)):
+                        if nn.x_labels[j] in nn.X_labels[k]:
+                            if X[2*j + 1] == nn.X_labels[k].split("= ")[1]:
+                                x[count] = 1
+                            else:
+                                x[count] = 0
+                            count += 1
+            tests.append(x)
 
-        dict = {}
-        x = [1, 1, 13, 3, ]
+        y_num = 0
+        for y in range(len(nn.y_labels)):
+            if request.POST.get('output') == nn.y_labels[y]:
+                y_num = y
 
+        scores = []
+        for x in tests:
+            score = []
+            y_score = nn.nn[y_num].predict(x.reshape(1, -1))
+            for i in range(len(x)):
+                score.append(x[i])
+            score.append(y_score[0])
+            scores.append(score)
 
-
-        print(X)
+        scores_labels = [nn.X_labels, request.POST.get('output')]
+        
         context = {
-
+            'scores' : scores,
+            'scores_labels' : scores_labels,
+            'xlabels': nn.x_labels,
+            'ylabels': nn.y_labels,
+            'dataset': chosen_name,
+            'X_labels': nn.X_labels,
+            'x_min': nn.min,
+            'x_max': nn.max,
         }
 
     return render(request, "results.html", context)
-
 
 def format(request):
     return render(request, "format.html")
@@ -246,7 +303,7 @@ def view(request):
 
 
 # Reads data from the database and formats it into a list that the neural network accepts
-def getDatasetList(dataset_name):
+def getDatasetList(dataset_name, new_data, add_data):
     check = Dataset.objects.filter(pk=dataset_name).exists()
     if check:
         current_dataset = Dataset.objects.filter(pk=dataset_name).values()[0]
@@ -260,11 +317,24 @@ def getDatasetList(dataset_name):
 
         dataset_data = current_dataset["data"].split("\n")
         for a in dataset_data:
-            if(a.split(",") != [""]):
+            if (a.split(",") != [""]):
                 final_list.append(a.split(","))
 
+        if len(new_data.split(",")) == len(dataset_headers):
+            if not ("" in new_data.split(",")):
+                final_list.append(new_data.split(","))
+                if current_dataset["data"][-1] != "\n":
+                    current_dataset["data"] = current_dataset["data"] + "\r\n"
+
+                new = current_dataset["data"] + new_data + "\r\n"
+                if add_data == 'on':
+                    with open('doe_app/neural_data/{file_name}.csv'.format(file_name=dataset_name), 'a') as file:
+                        file.write(new_data + '\r\n')
+                    Dataset.objects.filter(pk=dataset_name).update(name=dataset_name,
+                                                                   headers=current_dataset["headers"],
+                                                                   types=current_dataset["types"], data=new)
         return final_list
-    
+
     return None
 
 def getIndex(labels, label):
