@@ -111,6 +111,39 @@ def format(request):
     return render(request, "format.html")
 
 def datasets(request):
+    data1 = Dataset.objects.all()
+    if data1:
+      for info1 in data1:
+        info = info1
+
+      data2 = info.name
+      data3 = info.headers
+      data4 = info.types
+      data5 = info.data
+      data3 = data3.split(",")
+      width = len(data3)
+      data4 = data4.split(",")
+      subval = width * 10
+      data5 = data5.replace("\n",",")
+      data5 = data5.split(",")
+      data5 = data5[:subval]
+      data5 = np.array(data5)
+      data6 = np.reshape(data5, (-1, width) )
+      data5 = np.arange(10)
+      data7 = np.arange(width)
+
+
+      context1 = {
+        'data1': data1,
+        'data2': data2,
+			  'data3': data3,
+			  'data4': data4,
+        'data5': data5,
+			  'data6': data6,
+        'data7': data7,
+        'width': width,
+				'subval': subval
+      }
     if request.method == "POST":
         uploaded_file = request.FILES['file']
         dataset_name = uploaded_file.name.split(".")[0]
@@ -154,8 +187,10 @@ def datasets(request):
             Dataset.objects.create(name=dataset_name, headers=dataset_headers, types=dataset_types, data=dataset_data)
         else:
             raise Exception("Already uploaded database.")
-            
-    return render(request, "datasets.html")
+    if data1:
+      return render(request, "datasets.html", context1)
+    else:
+      return render(request, "datasets.html", {'data1': data1})
 
 def view(request):
     dataset_names = []
