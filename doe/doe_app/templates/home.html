@@ -18,7 +18,7 @@
 		font-size: 20px;
 	}
 	#main {
-		margin-top: 50px;
+		margin-top: 20px;
 		padding: 25px;
     	padding-left:  15px;
     	padding-right: 15px;
@@ -28,16 +28,73 @@
 		margin-left: auto;
 		margin-right: auto;
 		width: 800px;
-		position: relative;
-		top:150px;
+		position: absolute;
+		left: 29.5%;
+		top: 100px;
+	}
+
+	.scroll {
+		top: 50%;
+		left: 25%;
+		position: absolute;
+        padding: 5px;
+        margin-top: 5px;
+        width: 50%;
+        height: 45%;
+        overflow-y: scroll;
+		background-color: #00557A;
+		border:3px solid white;
+		border-radius: 25px 25px 25px 25px;
+		margin-left: auto;
+		margin-right: auto;
 	}
 </style>
-<img src="{% static 'test_tube.png' %}" class="floatRight" width="600" height="800">
+<img src="{% static 'test_tube.png' %}" class="floatRight" width="600" height="800" style="margin-top: 40px;">
+<img src="{% static 'test_tube.png' %}" class="floatLeft" width="600" height="800" style="margin-top: 40px;">
 <div id="main">
 	<h1 class="display-2" style="text-align: center;"><u>Dynamic DOE</u></h1>
 		<p style="text-align:center">A dynamic design of experiment (DOE) that statistically analyzes a set
 		of experiment data, using neural networks (NN), in order to find how the input features effects the outputs of the experimentation. Specifically, finding
 		which input features can optimize the output in order to reduce the
 		overall need of extensive experimentation.</p>
+</div>
+<div class="scroll">
+	<h1 class="display-2" style="text-align: center; font-size: 3em;">User Guide</h1>
+	<p style="font-size: 1.5em;"><u>Previewing a Dataset:</u></p>
+	<ul style="color: white; font-size: 1em;"> 
+		<li>Navigate to the Datasets page via the top menu</li>
+		<li>Choose the file you want to preview</li>
+		<li>After file is selected, preview will load at the bottom of the page.</li>
+	</ul>
+	<p style="font-size: 1.5em;"><u>Loading a New Dataset:</u></p>
+	<ul style="color: white; font-size: 1em;"> 
+		<li>Navigate to the Datasets page via the top menu</li>
+		<li>Drag and drop/click to upload your file of choice.</li>
+		<li>Make sure the csv file matches the file format specified at the top of the page.</li>
+	</ul>
+	<p style="font-size: 1.5em;"><u>Displaying the Graph of Existing Dataset:</u></p>
+	<ul style="color: white; font-size: 1em;"> 
+		<li>Navigate to the Graph page via the top menu</li>
+		<ul style="color: white; font-size: 1em;">
+			<li>Click on the file you want to display</li>
+			<li>The graph will automatically be displayed after file selection.</li>
+		</ul>
+		<li>Navigate to the Datasets page via the top menu</li>
+		<ul style="color: white; font-size: 1em;" >
+			<li>Click on the "View uploaded files" button</li>
+			<li>You will be redirected to the graph page where you can select a file to display</li>
+		</ul>
+	</ul>
+	<p style="font-size: 1.5em;"><u>How To Use The Graph Functionality:</u></p>
+	<ul style="color: white; font-size: 1em;">
+		<li>If you choose an input feature with a "C", you are choosing a continous feature.</li>
+		<ul style="color: white; font-size: 1em;">
+			<li>A line chart will be displayed.</li>
+		</ul>
+		<li>If you choose an input feature with a "D", you are choosing a discrete feature.</li>
+		<ul style="color: white; font-size: 1em;">
+			<li>A bar chart will be displayed.</li>
+		</ul>
+	</ul> 
 </div>
 {% endblock %}

@@ -25,8 +25,8 @@ def graph(request):
 
         # Scores of each feature for NN
         scores = []
-        for j in range(len(nn.y_labels)):
-            for i in range(len(nn.x_labels)):
+        for j in range(len(nn.y_labels)): # outputs
+            for i in range(len(nn.x_labels)): # features
                 values = []
                 labels = []
                 score = nn.score(i, j)
@@ -47,65 +47,96 @@ def graph(request):
             'xlabels': nn.x_labels,
             'ylabels': nn.y_labels,
             'dataset': graph_title,
+            'X_labels': nn.X_labels,
             'x_min': nn.min,
             'x_max': nn.max,
         }
 
         return render(request, "graph.html", context)
-#
-# def graph(request):
-#     # Variables
-#     global discrete
-#     labels, values = [], []
-#
-#     # Request Input
-#     graph_title = "FRACTIONAL_FACTORIAL_RUNS"   #default get dataset
-#     if request.method == 'POST':
-#         chosen_name = request.POST['dataset_choice']
-#         dataset_object = Dataset.objects.filter(name=chosen_name)
-#         graph_title = dataset_object[0].name
-#         if 'output' not in request.POST:
-#             output_label = ''
-#         else:
-#             output_label = request.POST['output']
-#         if 'feature' not in request.POST:
-#             feature_label = ''
-#         else:
-#             feature_label = request.POST['feature']
-#
-#     # Load data from DB & Train
-#     dataset_list = getDatasetList(graph_title)
-#     test = neural.NN(dataset_list, 'doe_app/neural_data/{file_name}.csv'.format(file_name = graph_title))
-#     test.fit()
-#
-#     # Use Score data to build context for html
-#     num_feature, num_output = getIndex(test.x_labels, feature_label), getIndex(test.y_labels, output_label)
-#     score_data = test.score(num_feature, num_output)
-#
-#     for i in range(len(score_data)):
-#         if (i % 2 == 0):
-#             labels.append(score_data[i].split(":")[1])
-#         else:
-#             values.append(score_data[i][0].astype(np.float64))
-#
-#     if (test.x_labels[num_feature].split(":")[0] == "C"):
-#         discrete = 0
-#     if (test.x_labels[num_feature].split(":")[0] == "D"):
-#         discrete = 1
-#
-#     context = {
-#         'discrete' : discrete,
-#         'labels': labels,
-#         'values': values,
-#         'ylabel': test.y_labels[num_output].split(":")[1],
-#         'xlabels': test.x_labels,
-#         'ylabels': test.y_labels,
-#         'graph_title': graph_title
-#     }
-#
-#     print(context)
-#
-#     return render(request, "graph.html", context)
+
+def results(request):
+    if request.method != 'POST':
+        return view(request)
+
+    if request.method == 'POST':
+        chosen_name = request.POST['dataset_choice']
+        dataset_object = Dataset.objects.filter(name=chosen_name)
+        graph_title = dataset_object[0].name
+
+        # Load data from DB & Train
+        dataset_list = getDatasetList(graph_title)
+        nn = neural.NN(dataset_list, 'doe_app/neural_data/{file_name}.csv'.format(file_name=graph_title))
+        nn.fit()
+
+        N = 1
+        values = []
+        count = 0
+        name = "x_" + str(count)
+        c_name = "cx_" + str(count)
+
+        while (name in request.POST) or (c_name in request.POST):
+            if name not in request.POST:
+                values.append([request.POST[c_name], request.POST["cx_"+str(count+1)]])
+                count += 2
+            else:
+                values.append(request.POST[name])
+                count += 1
+            name = "x_" + str(count)
+            c_name = "cx_" + str(count)
+
+        X = []
+        for v in values:
+            if isinstance(v, list):
+                v[0], v[1] = float(v[0]), float(v[1])
+                mid = (v[0] + v[1])/2
+                X.append("c")
+                X.append([v[0], (v[0] + mid)/2, mid, (mid + v[1])/2, v[1]])
+            if isinstance(v, str):
+                X.append("d")
+                if v == "Any":
+                    x = []
+                    idx = values.index(v)
+                    label = nn.x_labels[idx]
+                    for l in nn.X_labels:
+                        if label in l:
+                            x.append(l.split("= ")[1])
+                    X.append(x)
+                else:
+                    X.append([v])
+        for x in X:
+            N = N * len(x)
+
+        scores = {}
+        tests = []
+        # for i in range(N):
+        #     test = np.zeros(len(nn.X_labels))
+        #     for j in range(len(nn.x_labels)):
+        #         idx = []
+        #         for x in range(len(nn.X_labels)):
+        #             if nn.x_labels[j] in nn.X_labels[x]:
+        #                 idx.append(x)
+        #
+        #         type = nn.x_labels[j].split(":")[0]
+        #         if type == "D":
+        #             if len(X[j]) == 1:
+        #                 for x in idx:
+        #                     test[x] =
+        #             else:
+        #
+        #         if type == "C":
+
+        dict = {}
+        x = [1, 1, 13, 3, ]
+
+
+
+        print(X)
+        context = {
+
+        }
+
+    return render(request, "results.html", context)
+
 
 def format(request):
     return render(request, "format.html")
