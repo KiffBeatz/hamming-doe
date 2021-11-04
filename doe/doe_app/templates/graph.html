@@ -63,7 +63,7 @@
             </div>
 
             <div class="graph" style="margin: auto">
-                <canvas id="chart" width="1000px" height="350px"></canvas>
+                <canvas id="chart" width="1000px" height="400px"></canvas>
                 <script>
                     let str = '';
                     let X = {{ xlabels | safe }};
@@ -347,7 +347,6 @@
                             name = 'x_' + name_count;
                             str += '<select name=' + name + '>';
                             name_count++;
-                            str += '<option>Any</option>';
                             XX.forEach(function (i) {
                                 if (i.includes(x)) {
                                     str += '<option>';
@@ -373,7 +372,7 @@
 
                     str += '<div style="text-align: center; margin-top: 15px">';
                     str += '<a> Output: </a>';
-                    str += '<select >';
+                    str += '<select name=output>';
                     Y.forEach(function (y) {
                         str += '<option>' + y + '</option>';
                     });
@@ -390,28 +389,40 @@
         </div>
     </div>
 
-    <div class="section_box">
-        <h4>Add data to Graph</h4>
-        <form action="/graph/" method="post">
-            {% csrf_token %}
-            <div>
-                {% for value in xlabels %}
-                    <div>
-                        {{ value }}
-                        <input type="text" name="input_data_{{ forloop.counter }}" value="" size="10px">
-                    </div>
-                {% endfor %}
 
-                {% for value in ylabels %}
-                    <div>
-                        {{ value }}
-                        <input type="text" name="output_data_{{ forloop.counter }}" value="" size="10px">
-                    </div>
-                {% endfor %}
-                <input type="checkbox" name="add_data"> Add data to database and .csv file
-                <button type="submit" name="dataset_choice" value="{{ chosen_name }}">Add Data Value</button>
-            </div>
-        </form>
+    <div class="form_box" style="margin-top: 20px; ">
+        <div class="heading" style="margin-top: 10px; margin-bottom: 10px">
+            <h2 style="font-size: medium; font-weight: bold;">Add more data to dataset</h2>
+        </div>
+
+        <div class="section_box" style="width: 90%">
+            <h3 id="form_heading" name="dataset_choice" style="
+                    font-size: large;
+                    text-align: center;
+                    color: #00557A
+                ">{{ dataset | safe }}</h3>
+
+            <form action="/graph/" method="post">
+                {% csrf_token %}
+                <div>
+                    {% for value in xlabels %}
+                        <div>
+                            {{ value }}
+                            <input type="text" name="input_data_{{ forloop.counter }}" value="" size="10px">
+                        </div>
+                    {% endfor %}
+
+                    {% for value in ylabels %}
+                        <div>
+                            {{ value }}
+                            <input type="text" name="output_data_{{ forloop.counter }}" value="" size="10px">
+                        </div>
+                    {% endfor %}
+                    <input type="checkbox" name="add_data"> Add data to database and .csv file
+                    <button type="submit" name="dataset_choice" value="{{ dataset }}">Add Data Value</button>
+                </div>
+            </form>
+        </div>
     </div>
 
 {% endblock %}
