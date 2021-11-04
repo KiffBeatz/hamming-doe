@@ -39,6 +39,15 @@
             padding: 10px;
             margin: auto;
         }
+
+        #option1, #option2 {
+            display: inline;
+        }
+
+        #option2 {
+            float: right;
+        }
+
     </style>
 
 
@@ -341,10 +350,13 @@
                     str = '';
 
                     X.forEach(function (x) {
-                        str += '<div style="margin: auto">'
                         if (x[0] === "D") {
+                            str += '<div style="margin: 2px 0 0 0;">';
+                            str += '<div id="option1">';
                             str += '<a>' + x + " " + '</a>';
+                            str += '</div>';
                             name = 'x_' + name_count;
+                            str += '<div id="option2">';
                             str += '<select name=' + name + '>';
                             name_count++;
                             XX.forEach(function (i) {
@@ -356,18 +368,25 @@
                                 }
                             });
                             str += '</select>';
+                            str += '</div>';
+                            str += '</div>';
                         }
                         if (x[0] === "C") {
+                            str += '<div style="margin: 0 0 0 0;">';
+                            str += '<div id="option1"';
                             str += '<a>' + x + " " + '</a>';
+                            str += '</div>';
                             name = 'cx_' + name_count;
+                            str += '<div id="option2">';
                             str += '<input name=' + name + ' type="number" value=' + Number((x_min[count]).toFixed(3)) + '>';
                             name_count++;
                             name = 'cx_' + name_count;
                             str += '<input name=' + name + ' type="number" value=' + Number((x_max[count]).toFixed(3)) + '>';
+                            str += '</div>';
                             name_count++;
                             count++;
+                            str += '</div>';
                         }
-                        str += '</div>';
                     });
 
                     str += '<div style="text-align: center; margin-top: 15px">';
@@ -379,6 +398,7 @@
                     str += '</select>';
                     str += '</div>';
                     str += '<div style="text-align: center; margin-bottom: 10px">';
+                    str += '<br>';
                     str += '<button type="submit" name="dataset_choice" ' + 'value=' + '"' + '{{ dataset }}' + '"' + '>' + "TEST" + '</button>';
 
                     document.getElementById("test_div").innerHTML = str;
@@ -406,20 +426,32 @@
                 {% csrf_token %}
                 <div>
                     {% for value in xlabels %}
-                        <div>
-                            {{ value }}
-                            <input type="text" name="input_data_{{ forloop.counter }}" value="" size="10px">
+                        <div style="margin: 8px 0 0 0;">
+                            <div id="option1">
+                                {{ value }}
+                            </div>
+                            <div id="option2">
+                                <input type="text" name="input_data_{{ forloop.counter }}" value="" size="10px">
+                            </div>
                         </div>
                     {% endfor %}
 
                     {% for value in ylabels %}
-                        <div>
-                            {{ value }}
-                            <input type="text" name="output_data_{{ forloop.counter }}" value="" size="10px">
+                        <div style="margin: 8px 0 0 0;">
+                            <div id="option1">
+                                {{ value }}
+                            </div>
+                            <div id="option2">
+                                <input type="text" name="output_data_{{ forloop.counter }}" value="" size="10px">
+                            </div>
                         </div>
                     {% endfor %}
+                    <br>
+                    <br>
                     <input type="checkbox" name="add_data"> Add data to database and .csv file
-                    <button type="submit" name="dataset_choice" value="{{ dataset }}">Add Data Value</button>
+                    <div style="text-align: center; margin-bottom: 10px">
+                        <button type="submit" name="dataset_choice" value="{{ dataset }}">Add Data Value</button>
+                    </div>
                 </div>
             </form>
         </div>
