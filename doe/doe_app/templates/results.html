@@ -13,11 +13,13 @@
             padding: 10px;
             margin: auto;
         }
+
         th {
             background: #93979b;
-            color: #00557A; 
+            color: #00557A;
             text-align: left;
         }
+
         .section_box {
             width: 100%;
             height: 100%;
@@ -26,6 +28,7 @@
             padding: 5px;
             margin: auto;
         }
+
         .subTitle {
             margin: 0 auto;
             width: 10%;
@@ -33,6 +36,7 @@
             border-radius: 25px;
             padding: 5px;
         }
+
         .block_box {
             width: fit-content;
             background-color: #dddddd;
@@ -40,6 +44,7 @@
             padding: 10px;
             margin: auto;
         }
+
         .form_box {
             width: fit-content;
             background-color: #dddddd;
@@ -47,23 +52,28 @@
             padding: 5px;
             margin: auto;
         }
+
         #option1, #option2 {
             display: inline;
         }
+
         #option2 {
             float: right;
         }
-        table.table-bordered{
-            border:1px solid #00557A;
-            margin-top:20px;
+
+        table.table-bordered {
+            border: 1px solid #00557A;
+            margin-top: 20px;
         }
-        table.table-bordered > thead > tr > th{
+
+        table.table-bordered > thead > tr > th {
             background-color: #00557A;
-            color:white;
-            border:2.5px solid white;
+            color: white;
+            border: 2.5px solid white;
         }
-        table.table-bordered > tbody > tr > td{
-            border:2.5px solid #00557A;
+
+        table.table-bordered > tbody > tr > td {
+            border: 2.5px solid #00557A;
         }
     </style>
 
@@ -284,11 +294,6 @@
 
     </script>
 
-    <script>
-        let names = {{ names }};
-        console.log(names);
-    </script>
-
 
     {# HEADINGS #}
     <div class="heading" style="margin-top: 15px">
@@ -303,110 +308,121 @@
             font-size: large;
             text-align: center;
             color: #00557A
-        ">Table of test runs: </h3>  
+        ">Table of test runs: </h3>
     </div>
 
     <table class="table table-bordered">
         <thead>
-            <tr>
-                {% for score_label in scores_labels %} 
-                    <th>{{ score_label }}</th>
-                {% endfor %}
-            </tr>
+        <tr>
+            {% for score_label in scores_labels %}
+                <th>{{ score_label }}</th>
+            {% endfor %}
+        </tr>
         </thead>
         <tbody>
-            {% for score in scores %} 
+        {% for score in scores %}
             <tr>
-                {% for small_score in score %} 
+                {% for small_score in score %}
                     <td>{{ small_score }}</td>
                 {% endfor %}
             </tr>
-            {% endfor %}
+        {% endfor %}
         </tbody>
-      </table>
+    </table>
 
-      <div class="form_box" style="margin-top: 20px; ">
-
+    <div class="form_box" style="margin-top: 20px; ">
         <div class="heading" style="margin-top: 10px; margin-bottom: 10px">
             <h2 style="font-size: medium; font-weight: bold;">Test application with restrictions on features</h2>
         </div>
-
-        <div class="section_box">
+        <div class="section_box" style="width: 90%">
             <form id="test_form" action="/results/" method="post">
                 {% csrf_token %}
 
                 <h3 id="form_heading" name="dataset_choice" style="
-                    font-size: large;
-                    text-align: center;
-                    color: #00557A
-                ">{{ dataset | safe }}</h3>
+                                    font-size: large;
+                                    text-align: center;
+                                    color: #00557A
+                                ">{{ dataset | safe }}</h3>
 
-                <div class="section_box" id="test_div"></div>
-                <script>
-                    let name = '';
-                    let count = 0;
-                    let name_count = 0;
+                <div class="section_box" id="test_div">
+                    <script>
+                        let name = '';
+                        let count = 0;
+                        let name_count = 0;
 
-                    str = '';
+                        str = '';
 
-                    X.forEach(function (x) {
-                        if (x[0] === "D") {
-                            str += '<div style="margin: 2px 0 0 0;">';
-                            str += '<div id="option1">';
-                            str += '<a>' + x + " " + '</a>';
-                            str += '</div>';
-                            name = 'x_' + name_count;
-                            str += '<div id="option2">';
-                            str += '<select name=' + name + '>';
-                            name_count++;
-                            XX.forEach(function (i) {
-                                if (i.includes(x)) {
-                                    str += '<option>';
-                                    str += i.split("= ")[1];
-                                    str += '</option>';
-                                    count++;
-                                }
-                            });
-                            str += '</select>';
-                            str += '</div>';
-                            str += '</div>';
+                        X.forEach(function (x) {
+                            if (x[0] === "D") {
+                                str += '<div style="margin: 2px 0 0 0;">';
+                                str += '<div id="option1">';
+                                str += '<b>' + x + " " + '</b>';
+                                str += '</div>';
+                                name = 'x_' + name_count;
+                                str += '<div id="option2">';
+                                str += '<select name=' + name + '>';
+                                name_count++;
+                                XX.forEach(function (i) {
+                                    if (i.includes(x)) {
+                                        str += '<option>';
+                                        str += i.split("= ")[1];
+                                        str += '</option>';
+                                        count++;
+                                    }
+                                });
+                                str += '</select>';
+                                str += '</div>';
+                                str += '</div>';
+                            }
+                            if (x[0] === "C") {
+                                str += '<div style="margin: 0 0 0 0;">';
+
+                                str += '<div id="option1">';
+                                str += '<b>' + x + " " + '</b>';
+                                str += '</div>';
+
+                                str += '<div id="option2">';
+                                name = 'cx_' + name_count;
+                                let val_1 = Number((x_min[count]).toFixed(3));
+                                str += '<div id="option1">';
+                                str += '<a> Min </a>';
+                                str += '<input name="' + name + '" onfocusout="checkInput(id_1)" type="input" value=' + val_1 + '>';
+                                str += '</div>';
+                                name_count++;
+                                name = 'cx_' + name_count;
+                                let val_2 = Number((x_max[count]).toFixed(3));
+                                str += '<div id="option2">';
+                                str += '<a> Max </a>';
+                                str += '<input name="' + name + '" onfocusout="checkInput(id_2)" type="input" value=' + val_2 + '>';
+                                str += '</div>';
+                                name_count++;
+                                count++;
+                                str += '</div>';
+
+                                str += '</div>';
+                            }
+                        });
+
+                        str += '<div style="text-align: center; margin-top: 15px">';
+                        str += '<a> Output: </a>';
+                        str += '<select name=output>';
+                        Y.forEach(function (y) {
+                            str += '<option>' + y + '</option>';
+                        });
+                        str += '</select>';
+                        str += '</div>';
+                        str += '<div style="text-align: center; margin-bottom: 10px">';
+                        str += '<br>';
+                        str += '<button type="submit" name="dataset_choice" ' + 'value=' + '"' + '{{ dataset }}' + '"' + '>' + "TEST" + '</button>';
+
+                        document.getElementById("test_div").innerHTML += str;
+
+                        function checkInput(id) {
+                            document.getElementById(id).value = 69;
                         }
-                        if (x[0] === "C") {
-                            str += '<div style="margin: 0 0 0 0;">';
-                            str += '<div id="option1"';
-                            str += '<a>' + x + " " + '</a>';
-                            str += '</div>';
-                            name = 'cx_' + name_count;
-                            str += '<div id="option1">';
-                            str += '<input name=' + name + ' type="number" value=' + Number((x_min[count]).toFixed(3)) + '>';
-                            str += '</div>';
-                            name_count++;
-                            name = 'cx_' + name_count;
-                            str += '<div id="option2">';
-                            str += '<input name=' + name + ' type="number" value=' + Number((x_max[count]).toFixed(3)) + '>';
-                            str += '</div>';
-                            name_count++;
-                            count++;
-                            str += '</div>';
-                        }
-                    });
 
-                    str += '<div style="text-align: center; margin-top: 15px">';
-                    str += '<a> Output: </a>';
-                    str += '<select name=output>';
-                    Y.forEach(function (y) {
-                        str += '<option>' + y + '</option>';
-                    });
-                    str += '</select>';
-                    str += '</div>';
-                    str += '<div style="text-align: center; margin-bottom: 10px">';
-                    str += '<br>';
-                    str += '<button type="submit" name="dataset_choice" ' + 'value=' + '"' + '{{ dataset }}' + '"' + '>' + "TEST" + '</button>';
-
-                    document.getElementById("test_div").innerHTML = str;
-
-                </script>
-
+                    </script>
+                </div>
             </form>
         </div>
     </div>

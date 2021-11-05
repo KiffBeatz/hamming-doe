@@ -112,9 +112,9 @@ def results(request):
         for v in values:
             if isinstance(v, list):
                 v[0], v[1] = float(v[0]), float(v[1])
-                mid = (v[0] + v[1])/2
+                mid = round((v[0] + v[1])/2, 2)
                 X.append("c")
-                X.append([v[0], (v[0] + mid)/2, mid, (mid + v[1])/2, v[1]])
+                X.append([v[0], round((v[0] + mid)/2, 2), mid, round((mid + v[1])/2,2), v[1]])
             if isinstance(v, str):
                 X.append("d")
                 X.append(v)

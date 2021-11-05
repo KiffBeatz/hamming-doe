@@ -4,98 +4,99 @@
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
-<style>
-    h1 {
-        margin: 4px;
-		margin-bottom: 25px;
-        color: white;
-        font-size: 70px;
-    }
-	p {
-		margin-top: 4px;
-		margin-left: 8px;
-		color: white;
-		font-size: 20px;
-	}
-	#main {
-		margin-top: 20px;
-		padding: 25px;
-    	padding-left:  15px;
-    	padding-right: 15px;
-    	background-color: #00557A;
-		border:3px solid white;
-    	border-radius: 25px 25px 25px 25px;
-		margin-left: auto;
-		margin-right: auto;
-		position: absolute;
-		left: 25%;
-		top: 10%;
-		width: 50%;
-		height: 35%;
-	}
+    <style>
+        h1 {
+            margin: 4px;
+            margin-bottom: 25px;
+            color: white;
+            font-size: 70px;
+        }
 
-	.scroll {
-		top: 50%;
-		left: 25%;
-		position: absolute;
-        padding: 5px;
-        margin-top: 5px;
-        width: 50%;
-        height: 45%;
-        overflow-y: scroll;
-		background-color: #00557A;
-		border:3px solid white;
-		border-radius: 25px 25px 25px 25px;
-		margin-left: auto;
-		margin-right: auto;
-	}
-</style>
-<img src="{% static 'test_tube.png' %}" class="floatRight" width="600" height="800" style="margin-top: 40px;">
-<img src="{% static 'test_tube.png' %}" class="floatLeft" width="600" height="800" style="margin-top: 40px;">
-<div id="main">
-	<h1 class="display-2" style="text-align: center;"><u>Dynamic DOE</u></h1>
-		<p style="text-align:center">A dynamic design of experiment (DOE) that statistically analyzes a set
-		of experiment data, using neural networks (NN), in order to find how the input features effects the outputs of the experimentation. Specifically, finding
-		which input features can optimize the output in order to reduce the
-		overall need of extensive experimentation.</p>
-</div>
-<div class="scroll">
-	<h1 class="display-2" style="text-align: center; font-size: 3em;">User Guide</h1>
-	<p style="font-size: 1.5em;"><u>Previewing a Dataset:</u></p>
-	<ul style="color: white; font-size: 1em;"> 
-		<li>Navigate to the Datasets page via the top menu</li>
-		<li>Choose the file you want to preview</li>
-		<li>After file is selected, preview will load at the bottom of the page.</li>
-	</ul>
-	<p style="font-size: 1.5em;"><u>Loading a New Dataset:</u></p>
-	<ul style="color: white; font-size: 1em;"> 
-		<li>Navigate to the Datasets page via the top menu</li>
-		<li>Drag and drop/click to upload your file of choice.</li>
-		<li>Make sure the csv file matches the file format specified at the top of the page.</li>
-	</ul>
-	<p style="font-size: 1.5em;"><u>Displaying the Graph of Existing Dataset:</u></p>
-	<ul style="color: white; font-size: 1em;"> 
-		<li>Navigate to the Graph page via the top menu</li>
-		<ul style="color: white; font-size: 1em;">
-			<li>Click on the file you want to display</li>
-			<li>The graph will automatically be displayed after file selection.</li>
-		</ul>
-		<li>Navigate to the Datasets page via the top menu</li>
-		<ul style="color: white; font-size: 1em;" >
-			<li>Click on the "View uploaded files" button</li>
-			<li>You will be redirected to the graph page where you can select a file to display</li>
-		</ul>
-	</ul>
-	<p style="font-size: 1.5em;"><u>How To Use The Graph Functionality:</u></p>
-	<ul style="color: white; font-size: 1em;">
-		<li>If you choose an input feature with a "C", you are choosing a continous feature.</li>
-		<ul style="color: white; font-size: 1em;">
-			<li>A line chart will be displayed.</li>
-		</ul>
-		<li>If you choose an input feature with a "D", you are choosing a discrete feature.</li>
-		<ul style="color: white; font-size: 1em;">
-			<li>A bar chart will be displayed.</li>
-		</ul>
-	</ul> 
-</div>
+        p {
+            margin-top: 4px;
+            margin-left: 8px;
+            color: white;
+            font-size: 20px;
+        }
+
+        #main {
+            margin-top: 20px;
+            padding: 25px;
+            padding-left: 15px;
+            padding-right: 15px;
+            background-color: #00557A;
+            border: 3px solid white;
+            border-radius: 25px 25px 25px 25px;
+            margin-left: auto;
+            margin-right: auto;
+            position: absolute;
+            left: 25%;
+            top: 10%;
+            width: 50%;
+            height: 35%;
+        }
+
+        .scroll {
+            top: 50%;
+            left: 25%;
+            position: absolute;
+            padding: 5px;
+            margin-top: 5px;
+            width: 50%;
+            height: 45%;
+            overflow-y: scroll;
+            background-color: #00557A;
+            border: 3px solid white;
+            border-radius: 25px 25px 25px 25px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+    <img src="{% static 'test_tube.png' %}" class="floatRight" width="600" height="800" style="margin-top: 40px;">
+    <img src="{% static 'test_tube.png' %}" class="floatLeft" width="600" height="800" style="margin-top: 40px;">
+    <div id="main">
+        <h1 class="display-2" style="text-align: center;"><u>Dynamic DOE</u></h1>
+        <p style="text-align:center">A dynamic design of experiment (DOE) that statistically analyzes a set
+            of experiment data, using neural networks (NN), in order to find how the input features effects the outputs
+            of the experimentation. Specifically, finding
+            which input features can optimize the output in order to reduce the
+            overall need of extensive experimentation.</p>
+    </div>
+    <div class="scroll">
+        <h1 class="display-2" style="text-align: center; font-size: 3em;">User Guide</h1>
+        <p>The main purpose of the web application is to analyze dataset input with Artificial Intelligence techniques.
+            These datasets would typically describe a collection of inputs for a given application,
+            for ex. different print settings (input), for a 3D printer (application).</p>
+        <p style="font-size: 1.5em;"><u>Datasets:</u></p>
+        <p style="font-size: 17px">The user will have to load at least one dataset to access the graph visualization.</p>
+        <ul style="color: white; font-size: 1em;">
+            <li>Navigate to the Datasets page via the top menu</li>
+            <li>Drag and drop/click to upload your file of choice.</li>
+            <li>Make sure the csv file matches the file format specified at the top of the page.</li>
+            <li>Click the 'refresh' button to enable a preview of the uploaded file (to check if it was formatted
+                correctly)
+            </li>
+        </ul>
+        <p style="font-size: 1.5em;"><u>Analyzing the datasets:</u></p>
+        <ul style="color: white; font-size: 1em;">
+            <li>Navigate to the Graph page via the top menu</li>
+                <li>Click on the file you want to display</li>
+                <li>A graph displaying the effect of each input feature associated with the selected dataset will be
+                    displayed
+                </li>
+                <li>On the graph, if you choose an input feature with a "C", you are choosing a continous feature.</li>
+                <ul style="color: white; font-size: 1em;">
+                    <li>A line chart will be displayed.</li>
+                </ul>
+                <li>If you choose an input feature with a "D", you are choosing a discrete feature.</li>
+                <ul style="color: white; font-size: 1em;">
+                    <li>A bar chart will be displayed.</li>
+                </ul>
+                <li>Use the left-hand side form to add an additional feature to the dataset (the page will be
+                    reloaded)
+                </li>
+                <li>Use the right-hand side form to test the dataset with restrictions on specified input features</li>
+
+        </ul>
+    </div>
 {% endblock %}
